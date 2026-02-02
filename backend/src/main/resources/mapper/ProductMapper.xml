@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.backend.mapper.ProductMapper">
+
+    <select id="selectProductList" resultType="ProductVO">
+        SELECT * FROM tb_product
+        ORDER BY prod_id DESC
+        LIMIT #{limit} OFFSET #{offset}
+    </select>
+
+    <select id="selectProductCount" resultType="int">
+        SELECT COUNT(*) FROM tb_product
+    </select>
+
+    <select id="selectProductById" parameterType="int" resultType="ProductVO">
+        SELECT * FROM tb_product
+        WHERE prod_id = #{prodId}
+    </select>
+
+    <insert id="insertProduct" parameterType="ProductVO">
+        INSERT INTO tb_product (
+        prod_name, prod_price, prod_stock, prod_category, prod_desc, prod_img, prod_status, reg_date
+        ) VALUES (
+        #{prodName}, #{prodPrice}, #{prodStock}, #{prodCategory}, #{prodDesc}, #{prodImg}, 'ON_SALE', NOW()
+        )
+    </insert>
+
+    <delete id="deleteProduct" parameterType="int">
+        DELETE FROM tb_product WHERE prod_id = #{prodId}
+    </delete>
+
+    <update id="updateProduct" parameterType="ProductVO">
+        UPDATE tb_product
+        <set>
+            prod_name = #{prodName},
+            prod_price = #{prodPrice},
+            prod_stock = #{prodStock},
+            prod_category = #{prodCategory},
+            prod_desc = #{prodDesc},
+            <if test="prodImg != null">
+                prod_img = #{prodImg},
+            </if>
+        </set>
+        WHERE prod_id = #{prodId}
+    </update>
+
+    <update id="decreaseStock">
+        UPDATE tb_product
+        SET prod_stock = prod_stock - #{quantity}
+        WHERE prod_id = #{prodId}
+        AND prod_stock >= #{quantity}
+    </update>
+
+</mapper>

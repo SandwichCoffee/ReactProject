@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.backend.mapper.OrderMapper">
+
+    <select id="selectDailySales" resultType="com.portfolio.backend.dto.SalesDto">
+        SELECT DATE_FORMAT(order_date, '%m-%d') AS date,
+        SUM(total_amount) AS revenue
+        FROM tb_order
+        WHERE status = 'PAID'
+        GROUP BY DATE_FORMAT(order_date, '%m-%d')
+        ORDER BY date ASC
+    </select>
+
+    <select id="selectTotalRevenue" resultType="int">
+        SELECT IFNULL(SUM(total_amount), 0) FROM tb_order WHERE status = 'PAID'
+    </select>
+
+    <insert id="insertOrder" parameterType="com.portfolio.backend.vo.OrderVO" useGeneratedKeys="true" keyProperty="orderId">
+        INSERT INTO tb_order (user_id, order_no, total_amount, status, order_date)
+        VALUES (#{userId}, #{orderNo}, #{totalAmount}, 'PAID', NOW())
+    </insert>
+
+    <insert id="insertOrderDetail" parameterType="com.portfolio.backend.vo.OrderDetailVO">
+        INSERT INTO tb_order_detail (order_id, prod_id, price, quantity)
+        VALUES (#{orderId}, #{prodId}, #{price}, #{quantity})
+    </insert>
+
+</mapper>

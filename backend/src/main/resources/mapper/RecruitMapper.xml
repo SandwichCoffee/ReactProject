@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.backend.mapper.RecruitMapper">
+
+    <select id="selectRecruitList" resultType="RecruitVO">
+        SELECT * FROM tb_recruit ORDER BY recruit_id DESC
+    </select>
+
+    <select id="selectRecruitById" parameterType="int" resultType="RecruitVO">
+        SELECT * FROM tb_recruit WHERE recruit_id = #{recruitId}
+    </select>
+
+    <insert id="insertRecruit" parameterType="RecruitVO">
+        INSERT INTO tb_recruit (title, contents, status, start_date, end_date, reg_date)
+        VALUES (#{title}, #{contents}, #{status}, #{startDate}, #{endDate}, NOW())
+    </insert>
+
+    <update id="updateRecruit" parameterType="RecruitVO">
+        UPDATE tb_recruit
+        SET title = #{title},
+        contents = #{contents},
+        status = #{status},
+        start_date = #{startDate},
+        end_date = #{endDate}
+        WHERE recruit_id = #{recruitId}
+    </update>
+
+    <delete id="deleteRecruit" parameterType="int">
+        DELETE FROM tb_recruit WHERE recruit_id = #{recruitId}
+    </delete>
+
+</mapper>
