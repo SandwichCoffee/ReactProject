@@ -2,8 +2,16 @@ server:
   port: 8088
 
 spring:
+<<<<<<< HEAD
   profiles:
     active: local
+=======
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/portfolio
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+>>>>>>> 57c7c0465fc5cb7c67e96d4e1756ad486261b902
   servlet:
     multipart:
       max-file-size: 10MB
