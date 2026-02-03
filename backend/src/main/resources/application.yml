@@ -8,8 +8,8 @@ spring:
   datasource:
     driver-class-name: org.mariadb.jdbc.Driver
     url: jdbc:mariadb://localhost:3306/portfolio
-    username: root
-    password: 1234
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
   servlet:
     multipart:
       max-file-size: 10MB
