@@ -13,6 +13,7 @@
 
 
 **기술 스택**
+
 Frontend
  - Core:  React 19, TypeScript | 최신 React Hook과 정적 타입 안정성 확보 |
  - Build Tool: Vite
@@ -23,7 +24,7 @@ Frontend
 
 Backend
 - Framework: Spring Boot
-- Persistence: MyBatis, MySQL
+- Persistence: MyBatis, MariaDB
 - Build: Gradle
 
 
