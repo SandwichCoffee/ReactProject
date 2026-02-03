@@ -1,15 +1,9 @@
 server:
   port: 8088
 
-file:
-  upload-dir: C:/portfolio-uploads/
-
 spring:
-  datasource:
-    driver-class-name: org.mariadb.jdbc.Driver
-    url: jdbc:mariadb://localhost:3306/portfolio
-    username: root
-    password: 1234
+  profiles:
+    active: local
   servlet:
     multipart:
       max-file-size: 10MB
@@ -20,3 +14,4 @@ mybatis:
   type-aliases-package: com.portfolio.backend.vo
   configuration:
     map-underscore-to-camel-case: true
+

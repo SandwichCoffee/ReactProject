@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/portfolio
+    username: ${DB_USERNAME:root}
+    # 개발 편의를 위해 기본값 1234 복구 (환경변수 없으면 1234 사용)
+    password: ${DB_PASSWORD:1234}
+
+file:
+  upload-dir: C:/portfolio-uploads/

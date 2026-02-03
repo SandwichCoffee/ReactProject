@@ -1,7 +1,8 @@
 package com.portfolio.backend.controller;
 
 import com.portfolio.backend.service.CartService;
-import com.portfolio.backend.vo.CartVO;
+import com.portfolio.backend.dto.CartDto;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -13,18 +14,18 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("/user/{userId}")
-    public List<CartVO> getCartList(@PathVariable int userId) {
+    public List<CartDto.Response> getCartList(@PathVariable int userId) {
         return cartService.getMyCart(userId);
     }
 
     @PostMapping
-    public void addToCart(@RequestBody CartVO cart) {
-        cartService.addCart(cart);
+    public void addToCart(@RequestBody @Valid CartDto.Request dto) {
+        cartService.addCart(dto);
     }
 
     @PutMapping
-    public void updateQuantity(@RequestBody CartVO cart) {
-        cartService.updateQuantity(cart);
+    public void updateQuantity(@RequestBody @Valid CartDto.Request dto) {
+        cartService.updateQuantity(dto);
     }
 
     @DeleteMapping("/{cartId}")

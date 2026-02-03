@@ -2,6 +2,8 @@ package com.portfolio.backend.service;
 
 import com.portfolio.backend.mapper.ProductMapper;
 import com.portfolio.backend.vo.ProductVO;
+import com.portfolio.backend.dto.ProductDto;
+import com.portfolio.backend.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -19,23 +21,30 @@ public class ProductService {
     @Value("${file.upload-dir}")
     private String uploadDir;
 
-    public java.util.Map<String, Object> getProductList(int page, int size) {
+    public PageResponse<ProductDto.Response> getProductList(int page, int size) {
         int offset = (page - 1) * size;
         List<ProductVO> list = productMapper.selectProductList(size, offset);
         int total = productMapper.selectProductCount();
         
-        java.util.Map<String, Object> response = new java.util.HashMap<>();
-        response.put("list", list);
-        response.put("total", total);
+        List<ProductDto.Response> dtos = list.stream().map(this::toResponse).toList();
         
-        return response;
+        return new PageResponse<>(dtos, total);
     }
 
-    public ProductVO getProduct(int prodId) {
-        return productMapper.selectProductById(prodId);
+    public ProductDto.Response getProduct(int prodId) {
+        ProductVO vo = productMapper.selectProductById(prodId);
+        return toResponse(vo);
     }
 
-    public void registerProduct(ProductVO vo, MultipartFile file) {
+    public void registerProduct(ProductDto.Request dto, MultipartFile file) {
+        ProductVO vo = new ProductVO();
+        vo.setProdName(dto.getProdName());
+        vo.setProdPrice(dto.getProdPrice());
+        vo.setProdStock(dto.getProdStock());
+        vo.setProdCategory(dto.getProdCategory());
+        vo.setProdDesc(dto.getProdDesc());
+        vo.setProdStatus(dto.getProdStatus() != null ? dto.getProdStatus() : "ON_SALE"); // Default status
+
         if(file != null && !file.isEmpty()) {
             try {
                 String originalFilename = file.getOriginalFilename();
@@ -58,7 +67,16 @@ public class ProductService {
         productMapper.deleteProduct(prodId);
     }
 
-    public void updateProduct(ProductVO vo, MultipartFile file) {
+    public void updateProduct(int id, ProductDto.Request dto, MultipartFile file) {
+        ProductVO vo = new ProductVO();
+        vo.setProdId(id);
+        vo.setProdName(dto.getProdName());
+        vo.setProdPrice(dto.getProdPrice());
+        vo.setProdStock(dto.getProdStock());
+        vo.setProdCategory(dto.getProdCategory());
+        vo.setProdDesc(dto.getProdDesc());
+        vo.setProdStatus(dto.getProdStatus());
+
         if(file != null && !file.isEmpty()) {
             try {
                 String originalFilename = file.getOriginalFilename();
@@ -72,11 +90,28 @@ public class ProductService {
             }
             catch(IOException e) {
                 e.printStackTrace();
-
                 throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
             }
+        } else {
+             ProductVO old = productMapper.selectProductById(id);
+             if(old != null) vo.setProdImg(old.getProdImg());
         }
 
         productMapper.updateProduct(vo);
+    }
+
+    private ProductDto.Response toResponse(ProductVO vo) {
+        if (vo == null) return null;
+        ProductDto.Response dto = new ProductDto.Response();
+        dto.setProdId(vo.getProdId());
+        dto.setProdName(vo.getProdName());
+        dto.setProdPrice(vo.getProdPrice());
+        dto.setProdStock(vo.getProdStock());
+        dto.setProdCategory(vo.getProdCategory());
+        dto.setProdDesc(vo.getProdDesc());
+        dto.setProdImg(vo.getProdImg());
+        dto.setProdStatus(vo.getProdStatus());
+        dto.setRegDate(vo.getRegDate());
+        return dto;
     }
 }

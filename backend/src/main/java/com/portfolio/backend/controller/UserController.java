@@ -2,6 +2,8 @@ package com.portfolio.backend.controller;
 
 import com.portfolio.backend.service.UserService;
 import com.portfolio.backend.vo.UserVO;
+import com.portfolio.backend.dto.UserDto;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import java.util.List;
@@ -23,19 +25,13 @@ public class UserController {
     }
 
     @PostMapping("/join")
-    public void join(@RequestBody UserVO user) {
+    public void join(@RequestBody @Valid UserDto.RegisterRequest user) {
         userService.join(user);
     }
 
     @PostMapping("/login")
-    public UserVO login(@RequestBody UserVO user) {
-        return userService.login(user.getEmail(), user.getPassword());
-    }
-
-    // 기존 insertUser는 관리자용 또는 테스트용으로 남겨두거나 제거 (여기서는 join으로 대체되므로 제거해도 무방하나, 기존 코드 유지 차원에서 둠)
-    @PostMapping
-    public void insertUser(@RequestBody UserVO user) {
-        userService.join(user);
+    public UserDto.Response login(@RequestBody @Valid UserDto.LoginRequest user) {
+        return userService.login(user);
     }
 
     @PutMapping("/{id}")

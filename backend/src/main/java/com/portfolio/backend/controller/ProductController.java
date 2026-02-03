@@ -1,7 +1,9 @@
 package com.portfolio.backend.controller;
 
 import com.portfolio.backend.service.ProductService;
-import com.portfolio.backend.vo.ProductVO;
+import com.portfolio.backend.dto.ProductDto;
+import com.portfolio.backend.dto.PageResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,7 +16,7 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public java.util.Map<String, Object> getProductList(
+    public PageResponse<ProductDto.Response> getProductList(
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
@@ -22,13 +24,13 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ProductVO getProduct(@PathVariable int id) {
+    public ProductDto.Response getProduct(@PathVariable int id) {
         return productService.getProduct(id);
     }
 
     @PostMapping
-    public void createProduct(ProductVO vo, @RequestParam(value = "file", required = false) MultipartFile file) {
-        productService.registerProduct(vo, file);
+    public void createProduct(@Valid ProductDto.Request dto, @RequestParam(value = "file", required = false) MultipartFile file) {
+        productService.registerProduct(dto, file);
     }
 
     @DeleteMapping("/{id}")
@@ -37,8 +39,7 @@ public class ProductController {
     }
 
     @PutMapping("/{id}")
-    public void updateProduct(@PathVariable int id, ProductVO productVO, @RequestParam(value = "file", required = false) MultipartFile file) {
-        productVO.setProdId(id);
-        productService.updateProduct(productVO, file);
+    public void updateProduct(@PathVariable int id, @Valid ProductDto.Request dto, @RequestParam(value = "file", required = false) MultipartFile file) {
+        productService.updateProduct(id, dto, file);
     }
 }
