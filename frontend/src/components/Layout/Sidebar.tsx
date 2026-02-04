@@ -2,8 +2,9 @@ import { NavLink } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
-  ShoppingBag,
-  FileText,
+  Package,
+  Briefcase,
+  FileCode2,
   Settings,
   LogOut,
 } from "lucide-react";
@@ -42,8 +43,9 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
       label: "MANAGEMENT",
       items: [
         { name: "회원 관리", path: "/users", icon: Users },
-        { name: "상품 관리", path: "/products", icon: ShoppingBag },
-        { name: "채용 공고", path: "/recruits", icon: FileText },
+        { name: "상품 관리", path: "/products", icon: Package },
+        { name: "채용 공고", path: "/recruits", icon: Briefcase },
+        { name: "개발 일지", path: "/devlogs", icon: FileCode2 },
       ].filter((item) => {
         if (item.path === "/users" && user?.role !== "Admin") return false;
         return true;

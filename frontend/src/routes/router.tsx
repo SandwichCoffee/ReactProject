@@ -14,6 +14,8 @@ import ProductEdit from "@/pages/Products/ProductEdit";
 import RecruitList from "@/pages/Recruit/RecruitList";
 import RecruitWrite from "@/pages/Recruit/RecruitWrite";
 import RecruitDetail from "@/pages/Recruit/RecruitDetail";
+import DevLogList from "@/pages/DevLog/DevLogList";
+import DevLogWrite from "@/pages/DevLog/DevLogWrite";
 import CartList from "@/pages/Cart/CartList";
 import Login from "@/pages/Auth/Login";
 import Register from "@/pages/Auth/Register";
@@ -70,6 +72,14 @@ export const router = createBrowserRouter([
               { path: "new", element: <RecruitWrite /> },
               { path: ":id", element: <RecruitDetail /> },
               { path: ":id/edit", element: <RecruitWrite /> },
+            ],
+          },
+          {
+            path: "devlogs",
+            children: [
+              { index: true, element: <DevLogList /> },
+              { path: "new", element: <DevLogWrite /> },
+              { path: ":id/edit", element: <DevLogWrite /> },
             ],
           },
           { path: "cart", element: <CartList /> },

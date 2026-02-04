@@ -3,41 +3,35 @@ import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill-new";
 import "react-quill-new/dist/quill.snow.css";
 
-import { createRecruit, getRecruitById, updateRecruit, type RecruitInput } from "@/api/recruitApi";
+import { createDevLog, getDevLogById, updateDevLog, type DevLogInput } from "@/api/devlogApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
-export default function RecruitWrite() {
+export default function DevLogWrite() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const isEdit = !!id;
 
-  // 입력값 상태 관리
-  const [formData, setFormData] = useState<RecruitInput>({
+  const [formData, setFormData] = useState<DevLogInput>({
     title: "",
-    contents: "",
-    status: "DRAFT", 
-    startDate: "",
-    endDate: "",
+    content: "",
+    type: "FEATURE", // default
   });
 
   useEffect(() => {
     if (isEdit && id) {
-      getRecruitById(id).then((data) => {
+      getDevLogById(id).then((data) => {
         setFormData({
           title: data.title,
-          contents: data.contents,
-          status: data.status,
-          startDate: data.startDate,
-          endDate: data.endDate,
+          content: data.content,
+          type: data.type,
         });
       });
     }
   }, [isEdit, id]);
 
-  // 텍스트/날짜 입력 핸들러
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>,
   ) => {
@@ -46,26 +40,25 @@ export default function RecruitWrite() {
   };
 
   const handleEditorChange = (value: string) => {
-    setFormData((prev) => ({ ...prev, contents: value }));
+    setFormData((prev) => ({ ...prev, content: value }));
   };
 
-  // 저장 버튼
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.title || !formData.contents) {
+    if (!formData.title || !formData.content) {
       alert("제목과 내용은 필수입니다.");
       return;
     }
 
     try {
       if (isEdit && id) {
-         await updateRecruit(Number(id), formData);
-         alert("공고가 수정되었습니다.");
+        await updateDevLog(Number(id), formData);
+        alert("로그가 수정되었습니다.");
       } else {
-         await createRecruit(formData);
-         alert("공고가 등록되었습니다.");
+        await createDevLog(formData);
+        alert("로그가 등록되었습니다.");
       }
-      navigate("/recruits");
+      navigate("/devlogs");
     } catch (error) {
       console.error(error);
       alert("등록 실패!");
@@ -76,85 +69,63 @@ export default function RecruitWrite() {
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
         <h2 className="text-3xl font-bold tracking-tight">
-          {isEdit ? "채용 공고 수정" : "채용 공고 등록"}
+          {isEdit ? "개발 일지 수정" : "개발 일지 작성"}
         </h2>
-        <Button variant="outline" onClick={() => navigate("/recruits")}>
+        <Button variant="outline" onClick={() => navigate("/devlogs")}>
           취소
         </Button>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>공고 내용 작성</CardTitle>
+          <CardTitle>내용 작성</CardTitle>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
-            {/* 1. 제목 & 상태 */}
             <div className="grid grid-cols-4 gap-4">
               <div className="col-span-3 space-y-2">
-                <Label htmlFor="title">공고 제목</Label>
+                <Label htmlFor="title">제목</Label>
                 <Input
                   id="title"
                   name="title"
                   value={formData.title}
                   onChange={handleChange}
-                  placeholder="예: 2026년 상반기 신입 개발자 공채"
+                  placeholder="예: 로그인 버그 수정 완료"
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="status">상태</Label>
+                <Label htmlFor="type">유형</Label>
                 <select
-                  id="status"
-                  name="status"
-                  value={formData.status}
+                  id="type"
+                  name="type"
+                  value={formData.type}
                   onChange={handleChange}
                   className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                 >
-                  <option value="DRAFT">작성중</option>
-                  <option value="OPEN">진행중</option>
-                  <option value="CLOSED">마감</option>
+                  <option value="FEATURE">기능 추가 (FEATURE)</option>
+                  <option value="BUGFIX">버그 수정 (BUGFIX)</option>
+                  <option value="REFACTOR">리팩토링 (REFACTOR)</option>
+                  <option value="DOCS">문서작업 (DOCS)</option>
+                  <option value="ETC">기타 (ETC)</option>
                 </select>
               </div>
             </div>
 
-            {/* 2. 채용 기간 */}
-            <div className="grid grid-cols-2 gap-4">
-              <div className="space-y-2">
-                <Label htmlFor="startDate">시작일</Label>
-                <Input
-                  type="datetime-local"
-                  id="startDate"
-                  name="startDate"
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="endDate">마감일</Label>
-                <Input
-                  type="datetime-local"
-                  id="endDate"
-                  name="endDate"
-                  onChange={handleChange}
-                />
-              </div>
-            </div>
-
-            {/* 3. 웹 에디터 (React Quill) */}
             <div className="space-y-2">
               <Label>상세 내용</Label>
               <div className="h-96 pb-12">
                 <ReactQuill
                   theme="snow"
-                  value={formData.contents}
+                  value={formData.content}
                   onChange={handleEditorChange}
                   style={{ height: "100%" }}
-                  placeholder="채용 상세 요강을 입력하세요..."
+                  placeholder="오늘의 개발 내용을 기록하세요..."
                 />
               </div>
             </div>
 
             <Button type="submit" className="w-full">
-              {isEdit ? "공고 수정 완료" : "공고 등록 완료"}
+              {isEdit ? "수정 완료" : "등록 완료"}
             </Button>
           </form>
         </CardContent>
