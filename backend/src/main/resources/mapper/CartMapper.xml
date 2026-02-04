@@ -3,7 +3,7 @@
 
 <mapper namespace="com.portfolio.backend.mapper.CartMapper">
 
-    <select id="selectCartList" parameterType="int" resultType="com.portfolio.backend.vo.CartVO">
+    <select id="selectCartList" parameterType="String" resultType="com.portfolio.backend.vo.CartVO">
         SELECT c.cart_id,
         c.user_id,
         c.prod_id,

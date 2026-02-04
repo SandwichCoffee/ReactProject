@@ -14,7 +14,7 @@ public class CartController {
     private final CartService cartService;
 
     @GetMapping("/user/{userId}")
-    public List<CartDto.Response> getCartList(@PathVariable int userId) {
+    public List<CartDto.Response> getCartList(@PathVariable String userId) {
         return cartService.getMyCart(userId);
     }
 

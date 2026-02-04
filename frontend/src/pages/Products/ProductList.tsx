@@ -30,7 +30,7 @@ export default function ProductList() {
 
   useEffect(() => {
     if (user) {
-      getCartList(Number(user.userId))
+      getCartList(user.userId)
         .then((carts) => setCartCount(carts.length))
         .catch((err) => console.error(err));
     }
@@ -42,7 +42,7 @@ export default function ProductList() {
   const updateCartBadge = async () => {
     if (!user) return;
     try {
-      const carts = await getCartList(Number(user.userId));
+      const carts = await getCartList(user.userId);
       setCartCount(carts.length);
     } catch (err) {
       console.error(err);
@@ -59,7 +59,7 @@ export default function ProductList() {
     }
 
     try {
-      await addToCart(Number(user.userId), productId, 1);
+      await addToCart(user.userId, productId, 1);
 
       await updateCartBadge();
 
@@ -81,7 +81,7 @@ export default function ProductList() {
     }
 
     try {
-      await addToCart(Number(user.userId), prodId, 1);
+      await addToCart(user.userId, prodId, 1);
       navigate("/cart");
     } catch (error) {
       console.error("장바구니 추가 실패:", error);

@@ -10,12 +10,12 @@ export interface CartItem {
     prodImg: string | null;
 }
 
-export const getCartList = async (userId: number): Promise<CartItem[]> => {
+export const getCartList = async (userId: string): Promise<CartItem[]> => {
     const response = await client.get<CartItem[]>(`/cart/user/${userId}`);
     return response.data;
 };
 
-export const addToCart = async (userId: number, prodId: number, quantity: number): Promise<void> => {
+export const addToCart = async (userId: string, prodId: number, quantity: number): Promise<void> => {
     await client.post("/cart", { userId, prodId, quantity });
 };
 
@@ -28,6 +28,6 @@ export const deleteCartItem = async (cartId: number): Promise<void> => {
 };
 
 // 주문
-export const placeOrder = async (userId: number): Promise<void> => {
+export const placeOrder = async (userId: string): Promise<void> => {
     await client.post("/orders", { userId });
 }

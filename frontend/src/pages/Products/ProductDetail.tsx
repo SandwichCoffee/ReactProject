@@ -51,7 +51,7 @@ export default function ProductDetail() {
 
     try {
       // userId를 Redux state에서 가져와 사용
-      await addToCart(Number(user.userId), product.prodId, quantity);
+      await addToCart(user.userId, product.prodId, quantity);
       setIsCartDialogOpen(true);
     } catch (error) {
       console.error("장바구니 추가 실패:", error);

@@ -31,6 +31,6 @@ public class OrderController {
 
     @lombok.Data
     static class UserRequest {
-        private int userId;
+        private String userId;
     }
 }

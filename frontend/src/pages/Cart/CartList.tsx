@@ -24,16 +24,13 @@ export default function CartList() {
 
   useEffect(() => {
     if (!user) {
-      // If not logged in, wait or redirect?
-      // Assuming this page might be accessed directly.
-      // ProtectedRoute should handle this, but if not:
       return;
     }
 
     const fetchCart = async () => {
       setIsLoading(true);
       try {
-        const data = await getCartList(Number(user.userId));
+        const data = await getCartList(user.userId);
         setCartItems(data);
       } catch (err) {
         console.error("장바구니 불러오기 실패:", err);
@@ -57,7 +54,7 @@ export default function CartList() {
       return;
 
     try {
-      await placeOrder(Number(user.userId)); 
+      await placeOrder(user.userId); 
       toast.success("주문이 완료되었습니다.");
       navigate("/");
     } catch (error) {

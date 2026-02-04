@@ -9,7 +9,7 @@ public class CartDto {
     @Data
     public static class Request {
         @NotNull(message = "사용자 ID는 필수입니다.")
-        private Integer userId;
+        private String userId;
 
         @NotNull(message = "상품 ID는 필수입니다.")
         private Integer prodId;
@@ -23,7 +23,7 @@ public class CartDto {
     @Data
     public static class Response {
         private int cartId;
-        private int userId;
+        private String userId;
         private int prodId;
         private int quantity;
         private String prodName;

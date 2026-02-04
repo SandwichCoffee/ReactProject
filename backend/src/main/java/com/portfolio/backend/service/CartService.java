@@ -15,7 +15,7 @@ import java.util.List;
 public class CartService {
     private final CartMapper cartMapper;
 
-    public List<CartDto.Response> getMyCart(int userId) {
+    public List<CartDto.Response> getMyCart(String userId) {
         return cartMapper.selectCartList(userId).stream()
                 .map(this::toResponse)
                 .collect(Collectors.toList());

@@ -31,7 +31,7 @@ public class OrderService {
     }
 
     @Transactional
-    public void placeOrder(int userId) {
+    public void placeOrder(String userId) {
         // 장바구니 목록
         List<CartVO> cartList = cartMapper.selectCartList(userId);
 
