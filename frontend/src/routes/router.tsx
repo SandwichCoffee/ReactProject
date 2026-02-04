@@ -69,6 +69,7 @@ export const router = createBrowserRouter([
               { index: true, element: <RecruitList /> },
               { path: "new", element: <RecruitWrite /> },
               { path: ":id", element: <RecruitDetail /> },
+              { path: ":id/edit", element: <RecruitWrite /> },
             ],
           },
           { path: "cart", element: <CartList /> },

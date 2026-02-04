@@ -1,14 +1,17 @@
 import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/store/store";
 import { getRecruitById, deleteRecruit, type Recruit } from "@/api/recruitApi";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { ArrowLeft, Trash2 } from "lucide-react";
+import { ArrowLeft, Trash2, Edit } from "lucide-react";
 
 export default function RecruitDetail() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const { user } = useSelector((state: RootState) => state.auth);
   const [recruit, setRecruit] = useState<Recruit | null>(null);
 
   useEffect(() => {
@@ -35,10 +38,19 @@ export default function RecruitDetail() {
           <ArrowLeft className="mr-2 h-4 w-4" /> 목록으로
         </Button>
         <div className="space-x-2">
-          {/* 수정 버튼은 나중에 추가 가능 */}
-          <Button variant="destructive" onClick={handleDelete}>
-            <Trash2 className="mr-2 h-4 w-4" /> 삭제
-          </Button>
+          {user?.role === "Admin" && (
+            <>
+              <Button
+                variant="outline"
+                onClick={() => navigate(`/recruits/${recruit.recruitId}/edit`)}
+              >
+                <Edit className="mr-2 h-4 w-4" /> 수정
+              </Button>
+              <Button variant="destructive" onClick={handleDelete}>
+                <Trash2 className="mr-2 h-4 w-4" /> 삭제
+              </Button>
+            </>
+          )}
         </div>
       </div>
 

@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import ReactQuill from "react-quill-new";
-import "react-quill-new/dist/quill.snow.css"; // [중요] 에디터 스타일 불러오기
+import "react-quill-new/dist/quill.snow.css";
 
-import { createRecruit, type RecruitInput } from "@/api/recruitApi";
+import { createRecruit, getRecruitById, updateRecruit, type RecruitInput } from "@/api/recruitApi";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,15 +11,31 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function RecruitWrite() {
   const navigate = useNavigate();
+  const { id } = useParams<{ id: string }>();
+  const isEdit = !!id;
 
   // 입력값 상태 관리
   const [formData, setFormData] = useState<RecruitInput>({
     title: "",
     contents: "",
-    status: "DRAFT", // 기본값: 작성중
+    status: "DRAFT", 
     startDate: "",
     endDate: "",
   });
+
+  useEffect(() => {
+    if (isEdit && id) {
+      getRecruitById(id).then((data) => {
+        setFormData({
+          title: data.title,
+          contents: data.contents,
+          status: data.status,
+          startDate: data.startDate,
+          endDate: data.endDate,
+        });
+      });
+    }
+  }, [isEdit, id]);
 
   // 텍스트/날짜 입력 핸들러
   const handleChange = (
@@ -42,9 +58,14 @@ export default function RecruitWrite() {
     }
 
     try {
-      await createRecruit(formData);
-      alert("공고가 등록되었습니다.");
-      navigate("/recruits"); // 목록으로 이동
+      if (isEdit && id) {
+         await updateRecruit(Number(id), formData);
+         alert("공고가 수정되었습니다.");
+      } else {
+         await createRecruit(formData);
+         alert("공고가 등록되었습니다.");
+      }
+      navigate("/recruits");
     } catch (error) {
       console.error(error);
       alert("등록 실패!");
@@ -54,7 +75,9 @@ export default function RecruitWrite() {
   return (
     <div className="max-w-4xl mx-auto space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-3xl font-bold tracking-tight">채용 공고 등록</h2>
+        <h2 className="text-3xl font-bold tracking-tight">
+          {isEdit ? "채용 공고 수정" : "채용 공고 등록"}
+        </h2>
         <Button variant="outline" onClick={() => navigate("/recruits")}>
           취소
         </Button>
@@ -132,7 +155,7 @@ export default function RecruitWrite() {
             </div>
 
             <Button type="submit" className="w-full">
-              공고 등록 완료
+              {isEdit ? "공고 수정 완료" : "공고 등록 완료"}
             </Button>
           </form>
         </CardContent>
