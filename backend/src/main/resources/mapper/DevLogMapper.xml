@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.portfolio.backend.mapper.DevLogMapper">
+
+    <select id="selectDevLogList" resultType="com.portfolio.backend.vo.DevLogVO">
+        SELECT log_id, title, content, type, reg_date
+        FROM tb_devlog
+        ORDER BY reg_date DESC
+    </select>
+    
+    <select id="selectDevLogById" parameterType="int" resultType="com.portfolio.backend.vo.DevLogVO">
+        SELECT log_id, title, content, type, reg_date
+        FROM tb_devlog
+        WHERE log_id = #{logId}
+    </select>
+
+    <insert id="insertDevLog" parameterType="com.portfolio.backend.vo.DevLogVO" useGeneratedKeys="true" keyProperty="logId">
+        INSERT INTO tb_devlog (title, content, type, reg_date)
+        VALUES (#{title}, #{content}, #{type}, NOW())
+    </insert>
+
+    <update id="updateDevLog" parameterType="com.portfolio.backend.vo.DevLogVO">
+        UPDATE tb_devlog
+        SET title = #{title},
+            content = #{content},
+            type = #{type}
+        WHERE log_id = #{logId}
+    </update>
+
+    <delete id="deleteDevLog" parameterType="int">
+        DELETE FROM tb_devlog WHERE log_id = #{logId}
+    </delete>
+
+</mapper>
