@@ -2,13 +2,16 @@ import axios from "axios";
 import { store } from "@/store/store";
 import { logout } from "@/store/slices/authSlice";
 
-const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8088";
+const BASE_URL = import.meta.env.MODE === 'production'
+    ? "https://reactproject-q472.onrender.com/api"
+    : "http://localhost:8088/api";
 
 export const client = axios.create({
     baseURL: `${BASE_URL}/api`,
     headers: {
         "Content-Type": "application/json",
     },
+    withCredentials: true
 });
 
 // Request Interceptor: Add Token

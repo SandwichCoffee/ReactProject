@@ -2,10 +2,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Github, Mail, Phone, ExternalLink, Layout, Server, Terminal, Copy, Check } from "lucide-react";
+import { Mail, Phone, Layout, Server, Terminal, Copy } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { useState } from "react";
 
 export default function Resume() {
   const navigate = useNavigate();
