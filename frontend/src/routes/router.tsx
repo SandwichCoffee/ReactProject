@@ -89,5 +89,7 @@ export const router = createBrowserRouter([
         ],
       },
     ],
-  },
-]);
+  }
+], {
+  basename: "/ReactProject"
+});
