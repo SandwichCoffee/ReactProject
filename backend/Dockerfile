@@ -2,12 +2,11 @@ FROM gradle:8.5-jdk17 AS build
 WORKDIR /app
 COPY . .
 
-RUN ./gradlew clean build -x test
+RUN chmod +x ./gradlew
 
+RUN ./gradlew clean build -x test
 
 FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
-
-RUN chmod +x ./gradlew
 ENTRYPOINT ["java", "-jar", "app.jar"]
