@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import Layout from "@/components/Layout/MainLayout";
 import Dashboard from "@/pages/Dashboard/Dashboard";
 import MySettings from "@/pages/Users/MySettings";
@@ -23,7 +23,7 @@ import Register from "@/pages/Auth/Register";
 import ProtectedRoute from "@/components/Auth/ProtectedRoute";
 import AdminRoute from "@/components/Auth/AdminRoute";
 
-export const router = createBrowserRouter([
+export const router = createHashRouter([
   { path: "login", element: <Login /> },
   { path: "register", element: <Register /> },
   { path: "resume", element: <Resume /> },
@@ -90,6 +90,4 @@ export const router = createBrowserRouter([
       },
     ],
   }
-], {
-  basename: "/ReactProject"
-});
+]);
