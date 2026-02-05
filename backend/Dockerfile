@@ -9,5 +9,5 @@ FROM eclipse-temurin:17-jdk-alpine
 WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 
-
+RUN chmod +x ./gradlew
 ENTRYPOINT ["java", "-jar", "app.jar"]
