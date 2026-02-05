@@ -11,6 +11,7 @@ import ProductList from "@/pages/Products/ProductList";
 import ProductCreate from "@/pages/Products/ProductCreate";
 import ProductDetail from "@/pages/Products/ProductDetail";
 import ProductEdit from "@/pages/Products/ProductEdit";
+import Resume from "@/pages/About/Resume";
 import RecruitList from "@/pages/Recruit/RecruitList";
 import RecruitWrite from "@/pages/Recruit/RecruitWrite";
 import RecruitDetail from "@/pages/Recruit/RecruitDetail";
@@ -25,6 +26,7 @@ import AdminRoute from "@/components/Auth/AdminRoute";
 export const router = createBrowserRouter([
   { path: "login", element: <Login /> },
   { path: "register", element: <Register /> },
+  { path: "resume", element: <Resume /> },
   {
     path: "/",
     element: <ProtectedRoute />, 

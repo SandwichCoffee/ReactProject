@@ -7,6 +7,7 @@ import {
   FileCode2,
   Settings,
   LogOut,
+  UserCircle, 
 } from "lucide-react";
 import {
   Dialog,
@@ -37,7 +38,10 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
   const menuGroups = [
     {
       label: "ANALYTICS",
-      items: [{ name: "대시보드", path: "/", icon: LayoutDashboard }],
+      items: [
+          { name: "대시보드", path: "/", icon: LayoutDashboard },
+          { name: "내 이력서", path: "/resume", icon: UserCircle },
+      ],
     },
     {
       label: "MANAGEMENT",
