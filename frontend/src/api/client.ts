@@ -3,8 +3,8 @@ import { store } from "@/store/store";
 import { logout } from "@/store/slices/authSlice";
 
 const BASE_URL = import.meta.env.MODE === 'production'
-    ? "https://reactproject-q472.onrender.com/api"
-    : "http://localhost:8088/api";
+    ? "https://reactproject-q472.onrender.com"
+    : "http://localhost:8088";
 
 export const client = axios.create({
     baseURL: `${BASE_URL}/api`,
