@@ -15,7 +15,7 @@
 **기술 스택**
 
 Frontend
- - Core:  React 19, TypeScript | 최신 React Hook과 정적 타입 안정성 확보 |
+ - Core:  React 19, TypeScript
  - Build Tool: Vite
  - Styling: Tailwind CSS, shadcn/ui
  - State Mgmt: Redux Toolkit
