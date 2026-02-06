@@ -1,6 +1,8 @@
 import { client } from "./client";
 
-export const BASE_URL = import.meta.env.VITE_API_URL || "http://localhost:8088";
+export const BASE_URL = import.meta.env.MODE === 'production'
+    ? "https://reactproject-q472.onrender.com"
+    : (import.meta.env.VITE_API_URL || "http://localhost:8088");
 
 // apiClient removed, use imported client instead
 
