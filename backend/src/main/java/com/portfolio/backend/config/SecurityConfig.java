@@ -17,13 +17,8 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         http
-                // 1. CSRF 보안 끄기 (API 서버라서 필요 없음)
                 .csrf(csrf -> csrf.disable())
-
-                // 2. CORS 설정 적용 (프론트엔드와 통신 허용)
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
-
-                // 3. 모든 요청 허용 (로그인 없이 접근 가능하게)
                 .authorizeHttpRequests(auth -> auth
                         .anyRequest().permitAll()
                 );
@@ -31,13 +26,14 @@ public class SecurityConfig {
         return http.build();
     }
 
-    // CORS 설정 (프론트엔드 5173 포트 허용)
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        config.setAllowedOrigins(List.of("http://localhost:5173")); // 프론트엔드 주소
-        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+       //  config.addAllowedOriginPattern("*");
+        config.setAllowedOrigins(List.of("http://localhost:5173", "https://sandwichcoffee.github.io"));
+
+        config.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);
 
@@ -45,6 +41,7 @@ public class SecurityConfig {
         source.registerCorsConfiguration("/**", config);
         return source;
     }
+
     @Bean
     public org.springframework.security.crypto.password.PasswordEncoder passwordEncoder() {
         return new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder();
