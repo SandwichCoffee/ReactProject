@@ -54,7 +54,9 @@ export const createProduct = async (productData: ProductInput, file: File | null
         formData.append("file", file);
     }
 
-    await client.post("/products", formData);
+    await client.post("/products", formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });
 }
 
 export const deleteProduct = async (id: number): Promise<void> => {
@@ -74,5 +76,7 @@ export const updateProduct = async (id: number, productData: ProductInput, file:
         formData.append("file", file);
     }
 
-    await client.post(`/products/${id}`, formData);
+    await client.post(`/products/${id}`, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+    });
 }

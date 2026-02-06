@@ -39,7 +39,7 @@ public class ProductController {
     }
 
     @PostMapping("/{id}")
-    public void updateProduct(@PathVariable int id, @Valid ProductDto.Request dto, @RequestParam(value = "file", required = false) MultipartFile file) {
+    public void updateProduct(@PathVariable int id, @ModelAttribute @Valid ProductDto.Request dto, @RequestParam(value = "file", required = false) MultipartFile file) {
         productService.updateProduct(id, dto, file);
     }
 }
