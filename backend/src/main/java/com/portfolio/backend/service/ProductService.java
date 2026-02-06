@@ -48,15 +48,24 @@ public class ProductService {
         if(file != null && !file.isEmpty()) {
             try {
                 String originalFilename = file.getOriginalFilename();
-                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                String extension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
                 String savedFileName = UUID.randomUUID().toString() + extension;
 
-                File dest = new File(uploadDir + savedFileName);
+                File dir = new File(uploadDir);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                File dest = new File(dir, savedFileName);
                 file.transferTo(dest);
                 vo.setProdImg(savedFileName);
             }
             catch(IOException e) {
                 e.printStackTrace();
+                throw new RuntimeException("상품 등록 중 파일 업로드 오류", e);
             }
         }
 
@@ -80,17 +89,26 @@ public class ProductService {
         if(file != null && !file.isEmpty()) {
             try {
                 String originalFilename = file.getOriginalFilename();
-                String extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                String extension = "";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
                 String savedFileName = UUID.randomUUID().toString() + extension;
 
-                File dest = new File(uploadDir + savedFileName);
+                // Safe directory handling
+                File dir = new File(uploadDir);
+                if (!dir.exists()) {
+                    dir.mkdirs();
+                }
+
+                File dest = new File(dir, savedFileName);
                 file.transferTo(dest);
 
                 vo.setProdImg(savedFileName);
             }
             catch(IOException e) {
                 e.printStackTrace();
-                throw new RuntimeException("파일 업로드 중 오류가 발생했습니다.", e);
+                throw new RuntimeException("상품 수정 중 파일 업로드 오류", e);
             }
         } else {
              ProductVO old = productMapper.selectProductById(id);
