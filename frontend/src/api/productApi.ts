@@ -74,5 +74,5 @@ export const updateProduct = async (id: number, productData: ProductInput, file:
         formData.append("file", file);
     }
 
-    await client.put(`/products/${id}`, formData);
+    await client.post(`/products/${id}`, formData);
 }

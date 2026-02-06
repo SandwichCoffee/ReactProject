@@ -38,7 +38,7 @@ public class ProductController {
         productService.deleteProduct(id);
     }
 
-    @PutMapping("/{id}")
+    @PostMapping("/{id}")
     public void updateProduct(@PathVariable int id, @Valid ProductDto.Request dto, @RequestParam(value = "file", required = false) MultipartFile file) {
         productService.updateProduct(id, dto, file);
     }
