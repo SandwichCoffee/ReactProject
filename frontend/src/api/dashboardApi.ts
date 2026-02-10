@@ -10,7 +10,7 @@ export interface DashboardStats {
   totalRevenue: number;
 }
 
-export const getDashboardStats = async (): Promise<DashboardStats> => {
-  const response = await client.get<DashboardStats>("/orders/stats");
+export const getDashboardStats = async (period: string = 'daily'): Promise<DashboardStats> => {
+  const response = await client.get<DashboardStats>(`/orders/stats?period=${period}`);
   return response.data;
 };

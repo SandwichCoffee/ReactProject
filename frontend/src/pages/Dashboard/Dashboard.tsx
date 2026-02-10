@@ -20,17 +20,20 @@ export default function Home() {
   const [recruits, setRecruits] = useState<Recruit[]>([]);
   const [chartData, setChartData] = useState<SalesStat[]>([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
+  const [period, setPeriod] = useState("daily");
 
   useEffect(() => {
     // 2. 채용 공고
     getRecruits().then(setRecruits);
+  }, []);
 
+  useEffect(() => {
     // 3. 대시보드 통계
-    getDashboardStats().then((data) => {
+    getDashboardStats(period).then((data) => {
       setChartData(data.chartData);
       setTotalRevenue(data.totalRevenue);
     });
-  }, []);
+  }, [period]);
 
   return (
     <div className="space-y-8">
@@ -86,8 +89,22 @@ export default function Home() {
       {/* 2. 메인 차트 영역 (진짜 데이터 연결) */}
       <Card className="col-span-4">
         <CardHeader>
-          <CardTitle>일별 매출 추이</CardTitle>
-          <CardDescription>최근 발생한 주문 데이터를 기반으로 합니다.</CardDescription>
+          <div className="flex justify-between items-center">
+            <div>
+                <CardTitle>매출 추이</CardTitle>
+                <CardDescription>최근 발생한 주문 데이터를 기반으로 합니다.</CardDescription>
+            </div>
+            <select
+                className="p-2 border rounded-md text-sm"
+                value={period}
+                onChange={(e) => setPeriod(e.target.value)}
+            >
+                <option value="daily">일별</option>
+                <option value="weekly">주별</option>
+                <option value="monthly">월별</option>
+                <option value="yearly">년별</option>
+            </select>
+          </div>
         </CardHeader>
         <CardContent className="pl-2">
           <div className="h-[300px] w-full">
@@ -146,7 +163,11 @@ export default function Home() {
           <CardContent>
             <div className="space-y-4">
               {products.slice(0, 4).map((product) => (
-                <div key={product.prodId} className="flex items-center gap-4 border-b last:border-0 pb-3 last:pb-0">
+                <div 
+                  key={product.prodId} 
+                  className="flex items-center gap-4 border-b last:border-0 pb-3 last:pb-0 cursor-pointer hover:bg-slate-50 p-2 rounded transition-colors"
+                  onClick={() => navigate(`/products/${product.prodId}`)}
+                >
                   <div className="h-12 w-12 rounded bg-slate-100 overflow-hidden flex-shrink-0">
                     {product.prodImg ? (
                       <img 

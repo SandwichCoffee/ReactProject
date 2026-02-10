@@ -73,6 +73,9 @@ export default function RecruitList() {
                       {recruit.title}
                     </span>
                   </td>
+                  <td className="p-4 align-middle">
+                    {recruit.startDate?.split("T")[0]} ~ {recruit.endDate?.split("T")[0]}
+                  </td>
                   <td className="p-4 align-middle text-right">
                     <Button
                       variant="ghost"

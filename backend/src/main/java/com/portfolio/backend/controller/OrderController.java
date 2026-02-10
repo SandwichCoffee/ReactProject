@@ -15,10 +15,10 @@ public class OrderController {
     private final OrderService orderService;
 
     @GetMapping("/stats")
-    public Map<String, Object> getDashboardStats() {
+    public Map<String, Object> getDashboardStats(@RequestParam(defaultValue = "daily") String period) {
         Map<String, Object> stats = new HashMap<>();
 
-        stats.put("chartData", orderService.getDailySales());
+        stats.put("chartData", orderService.getSalesStats(period));
         stats.put("totalRevenue", orderService.getTotalRevenue());
 
         return stats;

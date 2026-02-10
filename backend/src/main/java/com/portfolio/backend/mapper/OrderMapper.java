@@ -9,6 +9,9 @@ import java.util.List;
 @Mapper
 public interface OrderMapper {
     List<SalesDto> selectDailySales();
+    List<SalesDto> selectWeeklySales();
+    List<SalesDto> selectMonthlySales();
+    List<SalesDto> selectYearlySales();
     int selectTotalRevenue();
     void insertOrder(OrderVO order);
     void insertOrderDetail(OrderDetailVO detail);

@@ -26,6 +26,19 @@ public class OrderService {
         return orderMapper.selectDailySales();
     }
 
+    public List<SalesDto> getSalesStats(String period) {
+        switch (period) {
+            case "weekly":
+                return orderMapper.selectWeeklySales();
+            case "monthly":
+                return orderMapper.selectMonthlySales();
+            case "yearly":
+                return orderMapper.selectYearlySales();
+            default:
+                return orderMapper.selectDailySales();
+        }
+    }
+
     public int getTotalRevenue() {
         return orderMapper.selectTotalRevenue();
     }

@@ -12,6 +12,33 @@
         ORDER BY date ASC
     </select>
 
+    <select id="selectWeeklySales" resultType="com.portfolio.backend.dto.SalesDto">
+        SELECT DATE_FORMAT(order_date, '%Y-w%u') AS date,
+        SUM(total_amount) AS revenue
+        FROM tb_order
+        WHERE status = 'PAID'
+        GROUP BY DATE_FORMAT(order_date, '%Y-w%u')
+        ORDER BY date ASC
+    </select>
+
+    <select id="selectMonthlySales" resultType="com.portfolio.backend.dto.SalesDto">
+        SELECT DATE_FORMAT(order_date, '%Y-%m') AS date,
+        SUM(total_amount) AS revenue
+        FROM tb_order
+        WHERE status = 'PAID'
+        GROUP BY DATE_FORMAT(order_date, '%Y-%m')
+        ORDER BY date ASC
+    </select>
+
+    <select id="selectYearlySales" resultType="com.portfolio.backend.dto.SalesDto">
+        SELECT DATE_FORMAT(order_date, '%Y') AS date,
+        SUM(total_amount) AS revenue
+        FROM tb_order
+        WHERE status = 'PAID'
+        GROUP BY DATE_FORMAT(order_date, '%Y')
+        ORDER BY date ASC
+    </select>
+
     <select id="selectTotalRevenue" resultType="int">
         SELECT IFNULL(SUM(total_amount), 0) FROM tb_order WHERE status = 'PAID'
     </select>

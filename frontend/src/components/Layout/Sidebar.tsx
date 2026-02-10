@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import {
   LayoutDashboard,
   Users,
@@ -32,6 +32,7 @@ interface SidebarProps {
 }
 
 export default function Sidebar({ isOpen, onClose }: SidebarProps) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { user } = useSelector((state: RootState) => state.auth);
 
@@ -147,7 +148,7 @@ export default function Sidebar({ isOpen, onClose }: SidebarProps) {
               </DialogClose>
               <Button variant="destructive" onClick={() => {
                   dispatch(logout());
-                  window.location.href = "/login";
+                  navigate("/login");
               }}>
                 로그아웃
               </Button>

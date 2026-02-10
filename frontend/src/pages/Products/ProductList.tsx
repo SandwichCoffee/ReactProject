@@ -154,7 +154,10 @@ export default function ProductList() {
                     </div>
                   )}
                   {product.prodStock <= 0 && (
-                    <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+                    <div 
+                      className="absolute inset-0 bg-black/50 flex items-center justify-center cursor-pointer"
+                      onClick={() => navigate(`/products/${product.prodId}`)}
+                    >
                       <Badge
                         variant="destructive"
                         className="text-lg px-4 py-1"
