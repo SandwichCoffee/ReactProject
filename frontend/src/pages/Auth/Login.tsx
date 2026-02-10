@@ -88,6 +88,26 @@ export default function Login() {
               로그인
             </Button>
             <Button
+              variant="outline"
+              className="w-full border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:text-blue-800"
+              type="button"
+              onClick={() => {
+                onSubmit({ email: "admin@aa.com", password: "123123" });
+              }}
+            >
+              관리자 계정으로 로그인
+            </Button>
+            <div className="relative">
+                <div className="absolute inset-0 flex items-center">
+                    <span className="w-full border-t" />
+                </div>
+                <div className="relative flex justify-center text-xs uppercase">
+                    <span className="bg-background px-2 text-muted-foreground">
+                        Or
+                    </span>
+                </div>
+            </div>
+            <Button
               variant="ghost"
               className="w-full"
               type="button"
