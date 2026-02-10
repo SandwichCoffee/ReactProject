@@ -66,7 +66,6 @@ const UserList = () => {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead className="w-[100px]">ID</TableHead>
               <TableHead>이름</TableHead>
               <TableHead>이메일</TableHead>
               <TableHead>권한</TableHead>
@@ -94,7 +93,6 @@ const UserList = () => {
               // 실제 데이터 반복 렌더링
               users.map((user) => (
                 <TableRow key={user.userId}>
-                  <TableCell className="font-medium">{user.userId}</TableCell>
                   <TableCell>{user.userName}</TableCell>
                   <TableCell>{user.email}</TableCell>
                   <TableCell>{user.role}</TableCell>
