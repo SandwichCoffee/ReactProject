@@ -145,7 +145,7 @@ export default function ProductList() {
                     <img
                       src={`${BASE_URL}/images/${product.prodImg}`}
                       alt={product.prodName}
-                      className="w-full h-full object-cover transaction-transform hover:scale-105"
+                      className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                       onClick={() => navigate(`/products/${product.prodId}`)}
                     />
                   ) : (
@@ -167,34 +167,27 @@ export default function ProductList() {
                     </div>
                   )}
                 </div>
-                <CardHeader>
+                <CardHeader className="pb-3">
                   <div className="flex justify-between items-start">
-                    <CardTitle className="text-lg">
+                    <CardTitle className="text-lg leading-tight line-clamp-2">
                       {product.prodName}
                     </CardTitle>
-                    <div
-                      style={{
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "4px",
-                        alignItems: "center",
-                      }}
-                    >
-                      <Badge variant="outline">{product.prodCategory}</Badge>
-                      <span className="text-xs text-slate-400">
+                    <div className="flex flex-col items-end gap-1.5 shrink-0 ml-4">
+                      <Badge variant="secondary" className="font-normal text-xs">{product.prodCategory}</Badge>
+                      <span className="text-xs text-slate-500 font-medium">
                         재고: {product.prodStock}
                       </span>
                     </div>
                   </div>
                 </CardHeader>
-                <CardContent>
-                  <div className="flex justify-between items-start mb-2">
-                    <p className="text-xl font-bold text-blue-600">
-                      {product.prodPrice.toLocaleString()}원
+                <CardContent className="pb-4">
+                  <div className="flex justify-between items-center">
+                    <p className="text-2xl font-bold text-slate-900">
+                      {product.prodPrice.toLocaleString()}<span className="text-base font-normal ml-1">원</span>
                     </p>
                   </div>
                 </CardContent>
-                <CardFooter className="text-sm text-slate-500">
+                <CardFooter className="flex gap-3 pt-0">
                   <Button
                     variant="outline"
                     className="flex-1"
