@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useProducts } from "@/hooks/useProducts";
 import { BASE_URL } from "@/api/productApi";
 import { getRecruits, type Recruit } from "@/api/recruitApi";
-import { getDashboardStats, type SalesStat } from "@/api/dashboardApi"; // [추가]
+import { getDashboardStats, type SalesStat } from "@/api/dashboardApi";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -37,11 +37,11 @@ export default function Home() {
 
   return (
     <div className="space-y-8">
-      {/* 1. 상단 요약 카드 */}
+      {/* 상단 요약 카드 */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">총 등록 상품</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">총 등록 상품</CardTitle>
             <Package className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -50,7 +50,7 @@ export default function Home() {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">진행 중 공고</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">진행 중 공고</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
@@ -60,100 +60,101 @@ export default function Home() {
           </CardContent>
         </Card>
         
-        {/* [수정] 진짜 매출액 표시 */}
+        {/* 매출액 */}
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">누적 총 매출</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">누적 총 매출</CardTitle>
             <TrendingUp className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-blue-600">
                 {totalRevenue.toLocaleString()}원
             </div>
-            <p className="text-xs text-muted-foreground">실시간 집계 중</p>
+            <CardDescription className="text-xs text-muted-foreground">실시간 집계 중</CardDescription>
           </CardContent>
         </Card>
         
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">시스템 상태</CardTitle>
+            <CardTitle className="text-sm font-medium text-muted-foreground">시스템 상태</CardTitle>
             <Users className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-green-600">정상</div>
-            <p className="text-xs text-muted-foreground">Server Uptime: 99.9%</p>
+            <CardDescription className="text-xs text-muted-foreground">Server Uptime: 99.9%</CardDescription>
           </CardContent>
         </Card>
       </div>
 
-      {/* 2. 메인 차트 영역 (진짜 데이터 연결) */}
-      <Card className="col-span-4">
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-                <CardTitle>매출 추이</CardTitle>
-                <CardDescription>최근 발생한 주문 데이터를 기반으로 합니다.</CardDescription>
-            </div>
-            <select
-                className="p-2 border rounded-md text-sm"
-                value={period}
-                onChange={(e) => setPeriod(e.target.value)}
-            >
-                <option value="daily">일별</option>
-                <option value="weekly">주별</option>
-                <option value="monthly">월별</option>
-                <option value="yearly">년별</option>
-            </select>
-          </div>
-        </CardHeader>
-        <CardContent className="pl-2">
-          <div className="h-[300px] w-full">
-            {chartData.length > 0 ? (
-                <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
-                    <CartesianGrid strokeDasharray="3 3" vertical={false} />
-                    <XAxis 
-                        dataKey="date" 
-                        stroke="#888888" 
-                        fontSize={12} 
-                        tickLine={false} 
-                        axisLine={false} 
-                    />
-                    <YAxis
-                        stroke="#888888"
-                        fontSize={12}
-                        tickLine={false}
-                        axisLine={false}
-                        tickFormatter={(value) => `₩${value.toLocaleString()}`}
-                    />
-                    <Tooltip 
-                        formatter={(value: any) => [`${value.toLocaleString()}원`, "매출"]}
-                        contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
-                    />
-                    <Line
-                        type="monotone"
-                        dataKey="revenue"
-                        stroke="#2563eb"
-                        strokeWidth={2}
-                        activeDot={{ r: 8 }}
-                    />
-                </LineChart>
-                </ResponsiveContainer>
-            ) : (
-                <div className="flex items-center justify-center h-full text-slate-400">
-                    아직 매출 데이터가 없습니다. 상품을 구매해보세요!
-                </div>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* 3. 하단 리스트 영역 (기존과 동일) */}
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        
-        {/* 왼쪽: 최근 등록 상품 */}
+      {/* 차트 영역 */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card className="col-span-4">
-           {/* ... (기존 상품 리스트 코드 그대로 유지) ... */}
+          <CardHeader>
+            <div className="flex justify-between items-center">
+              <div>
+                  <CardTitle>매출 추이</CardTitle>
+                  <CardDescription>최근 발생한 주문 데이터를 기반으로 합니다.</CardDescription>
+              </div>
+              <select
+                  className="p-2 border rounded-md text-sm"
+                  value={period}
+                  onChange={(e) => setPeriod(e.target.value)}
+              >
+                  <option value="daily">일별</option>
+                  <option value="weekly">주별</option>
+                  <option value="monthly">월별</option>
+                  <option value="yearly">년별</option>
+              </select>
+            </div>
+          </CardHeader>
+          <CardContent className="pl-2">
+            <div className="h-[300px] w-full">
+              {chartData.length > 0 ? (
+                  <ResponsiveContainer width="100%" height="100%">
+                  <LineChart data={chartData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <XAxis 
+                          dataKey="date" 
+                          stroke="#888888" 
+                          fontSize={12} 
+                          tickLine={false} 
+                          axisLine={false} 
+                      />
+                      <YAxis
+                          stroke="#888888"
+                          fontSize={12}
+                          tickLine={false}
+                          axisLine={false}
+                          tickFormatter={(value) => `₩${value.toLocaleString()}`}
+                      />
+                      <Tooltip 
+                          formatter={(value: any) => [`${value.toLocaleString()}원`, "매출"]}
+                          contentStyle={{ borderRadius: '8px', border: 'none', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
+                      />
+                      <Line
+                          type="monotone"
+                          dataKey="revenue"
+                          stroke="#2563eb"
+                          strokeWidth={2}
+                          activeDot={{ r: 8 }}
+                      />
+                  </LineChart>
+                  </ResponsiveContainer>
+              ) : (
+                  <div className="flex items-center justify-center h-full text-slate-400">
+                      아직 매출 데이터가 없습니다. 상품을 구매해보세요!
+                  </div>
+              )}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* 하단 리스트 */}
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
+        
+        {/* 최근 등록 상품 */}
+        <Card className="col-span-4">
            <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>최근 등록 상품</CardTitle>
             <Button variant="ghost" size="sm" onClick={() => navigate("/products")}>
@@ -173,7 +174,7 @@ export default function Home() {
                       <img 
                         src={`${BASE_URL}/images/${product.prodImg}`} 
                         alt={product.prodName} 
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover bg-slate-50"
                       />
                     ) : (
                       <ShoppingBag className="h-full w-full p-3 text-slate-400" />
@@ -194,8 +195,7 @@ export default function Home() {
         </Card>
 
         {/* 오른쪽: 최신 공고 */}
-        <Card className="col-span-3">
-            {/* ... (기존 공고 리스트 코드 그대로 유지) ... */}
+        <Card className="col-span-4">
              <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle>최신 채용 공고</CardTitle>
             <Button variant="ghost" size="sm" onClick={() => navigate("/recruits")}>
