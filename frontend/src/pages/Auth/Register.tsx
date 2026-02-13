@@ -14,6 +14,7 @@ import { toast } from "sonner";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { ArrowLeft, UserPlus } from "lucide-react";
 
 const registerSchema = z
   .object({
@@ -35,7 +36,7 @@ export default function Register() {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
   });
@@ -55,22 +56,33 @@ export default function Register() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh]">
-      <Card className="w-[400px]">
-        <CardHeader>
-          <CardTitle>회원가입</CardTitle>
-        </CardHeader>
+    <div className="flex flex-col justify-center items-center min-h-screen bg-muted">
+      <Card className="w-full max-w-[400px] shadow-lg border-border">
+        <CardHeader className="space-y-1 relative pb-2 pt-10">
+          <Button
+            variant="ghost"
+            className="absolute left-4 top-4 text-muted-foreground hover:text-foreground"
+            type="button"
+            onClick={() => navigate("/login")}
+          >
+            <ArrowLeft className="mr-2 h-4 w-4" /> 뒤로가기
+          </Button>
+          <div className="w-full text-center">
+            <CardTitle>회원가입</CardTitle>
+          </div>
+      </CardHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <CardContent className="space-y-4">
+          <CardContent className="space-y-4 pt-5">
             <div className="space-y-2">
               <Label htmlFor="email">이메일</Label>
               <Input
                 id="email"
                 type="email"
                 {...register("email")}
+                className={errors.email ? "border-destructive focus-visible:ring-destructive" : ""}
               />
               {errors.email && (
-                <p className="text-sm text-red-500">{errors.email.message}</p>
+                <p className="text-sm text-destructive">{errors.email.message}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -79,9 +91,10 @@ export default function Register() {
                 id="userName"
                 type="text"
                 {...register("userName")}
+                className={errors.userName ? "border-destructive focus-visible:ring-destructive" : ""}
               />
               {errors.userName && (
-                <p className="text-sm text-red-500">{errors.userName.message}</p>
+                <p className="text-sm text-destructive">{errors.userName.message}</p>
               )}
             </div>
             <div className="space-y-2">
@@ -90,9 +103,10 @@ export default function Register() {
                 id="password"
                 type="password"
                 {...register("password")}
+                className={errors.password ? "border-destructive focus-visible:ring-destructive" : ""}
               />
               {errors.password && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.password.message}
                 </p>
               )}
@@ -103,17 +117,19 @@ export default function Register() {
                 id="confirmPassword"
                 type="password"
                 {...register("confirmPassword")}
+                className={errors.confirmPassword ? "border-destructive focus-visible:ring-destructive" : ""}
               />
               {errors.confirmPassword && (
-                <p className="text-sm text-red-500">
+                <p className="text-sm text-destructive">
                   {errors.confirmPassword.message}
                 </p>
               )}
             </div>
           </CardContent>
           <CardFooter>
-            <Button type="submit" className="w-full">
-              가입하기
+            <Button type="submit" className="w-full font-bold gap-2" size="lg" disabled={isSubmitting}>
+              <UserPlus className="h-4 w-4" />
+              {isSubmitting ? "가입 처리 중..." : "가입하기"}
             </Button>
           </CardFooter>
         </form>

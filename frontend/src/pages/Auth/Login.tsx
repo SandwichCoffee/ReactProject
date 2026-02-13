@@ -49,8 +49,8 @@ export default function Login() {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-[80vh]">
-      <Card className="w-[350px]">
+    <div className="flex flex-col justify-center items-center min-h-screen bg-muted">
+      <Card className="w-full max-w-sm">
         <CardHeader>
           <CardTitle>로그인</CardTitle>
           <CardDescription>환영합니다.</CardDescription>
@@ -64,6 +64,7 @@ export default function Login() {
                 type="email"
                 placeholder="example@gmail.com"
                 {...register("email")}
+                className={errors.email ? "border-destructive focus-visible:ring-destructive" : ""}
               />
               {errors.email && (
                 <p className="text-sm text-red-500">{errors.email.message}</p>
@@ -75,6 +76,7 @@ export default function Login() {
                 id="password"
                 type="password"
                 {...register("password")}
+                className={errors.password ? "border-destructive focus-visible:ring-destructive" : ""}
               />
               {errors.password && (
                 <p className="text-sm text-red-500">
@@ -89,7 +91,7 @@ export default function Login() {
             </Button>
             <Button
               variant="outline"
-              className="w-full border-blue-200 bg-blue-50 text-blue-700 hover:bg-blue-100 hover:text-blue-800"
+              className="w-full bg-primary/10 text-primary border-primary hover:bg-primary/20"
               type="button"
               onClick={() => {
                 onSubmit({ email: "admin@aa.com", password: "123123" });
