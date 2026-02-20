@@ -15,7 +15,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { type RootState } from "@/store/store";
 import { logout } from "@/store/slices/authSlice";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Avatar, AvatarFallback/*, AvatarImage*/ } from "@/components/ui/avatar";
 import {
   Dialog,
   DialogContent,

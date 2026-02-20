@@ -82,3 +82,7 @@ export const updateProduct = async (id: number, productData: ProductInput, file:
         headers: { "Content-Type": "multipart/form-data" }
     });
 }
+
+export const webhookSimulation = async (userId: string, prodId: number): Promise<void> => {
+    await client.post("/webhook/simulate", { userId, prodId });
+}

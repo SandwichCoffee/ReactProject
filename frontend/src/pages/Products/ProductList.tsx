@@ -17,7 +17,6 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Plus, Image as ImageIcon, PackageSearch } from "lucide-react";
-import { toast } from "sonner";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/store/store";
 
@@ -124,7 +123,7 @@ export default function ProductList() {
                         variant="ghost"
                         size="sm"
                         className="text-slate-500 hover:text-primary hover:bg-primary/10"
-                        onClick={(e) => navigate(`/products/${product.prodId}`)}
+                        onClick={() => navigate(`/products/${product.prodId}`)}
                       >
                         <PackageSearch className="mr-1.5 h-4 w-4" />
                         상세

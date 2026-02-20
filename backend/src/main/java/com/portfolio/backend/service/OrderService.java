@@ -1,5 +1,6 @@
 package com.portfolio.backend.service;
 
+import com.portfolio.backend.dto.ProductDto;
 import com.portfolio.backend.mapper.CartMapper;
 import com.portfolio.backend.mapper.OrderMapper;
 import com.portfolio.backend.mapper.ProductMapper;
@@ -7,6 +8,7 @@ import com.portfolio.backend.vo.CartVO;
 import com.portfolio.backend.vo.OrderDetailVO;
 import com.portfolio.backend.vo.OrderVO;
 import com.portfolio.backend.dto.SalesDto;
+import com.portfolio.backend.vo.ProductVO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,5 +85,38 @@ public class OrderService {
             // 주문 이후 카트에서 목록 제거
             cartMapper.deleteCart(cart.getCartId());
         }
+    }
+
+    @Transactional
+    public void processWebhookSimulation(String userId, int prodId) {
+        ProductVO product = productMapper.selectProductById(prodId);
+
+        if(product == null) {
+            throw new IllegalArgumentException("존재하지 않는 상품입니다.");
+        }
+        if(product.getProdStock() <= 0) {
+            throw new IllegalStateException("재고가 부족하여 출고할 수 없습니다.");
+        }
+
+        // 재고 1 감소
+        int updatedRows = productMapper.decreaseStock(prodId, 1);
+        if(updatedRows == 0) {
+            throw new RuntimeException("재고 차감 처리 중 문제가 발생했습니다.");
+        }
+
+        OrderVO order = new OrderVO();
+        order.setUserId(userId);
+        order.setOrderNo("WH-" + UUID.randomUUID().toString().substring(0, 8).toUpperCase());
+        order.setTotalAmount(product.getProdPrice());
+
+        orderMapper.insertOrder(order);
+
+        OrderDetailVO detail = new OrderDetailVO();
+        detail.setOrderId(order.getOrderId());
+        detail.setProdId(prodId);
+        detail.setPrice(product.getProdPrice());
+        detail.setQuantity(1);
+
+        orderMapper.insertOrderDetail(detail);
     }
 }

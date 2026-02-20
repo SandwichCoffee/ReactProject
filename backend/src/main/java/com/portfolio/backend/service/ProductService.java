@@ -25,9 +25,9 @@ public class ProductService {
         int offset = (page - 1) * size;
         List<ProductVO> list = productMapper.selectProductList(size, offset);
         int total = productMapper.selectProductCount();
-        
+
         List<ProductDto.Response> dtos = list.stream().map(this::toResponse).toList();
-        
+
         return new PageResponse<>(dtos, total);
     }
 
@@ -43,7 +43,7 @@ public class ProductService {
         vo.setProdStock(dto.getProdStock());
         vo.setProdCategory(dto.getProdCategory());
         vo.setProdDesc(dto.getProdDesc());
-        vo.setProdStatus(dto.getProdStatus() != null ? dto.getProdStatus() : "ON_SALE"); // Default status
+        vo.setProdStatus(dto.getProdStatus() != null ? dto.getProdStatus() : "ON_SALE");
 
         if(file != null && !file.isEmpty()) {
             try {
@@ -95,7 +95,6 @@ public class ProductService {
                 }
                 String savedFileName = UUID.randomUUID().toString() + extension;
 
-                // Safe directory handling
                 File dir = new File(uploadDir);
                 if (!dir.exists()) {
                     dir.mkdirs();
@@ -111,8 +110,8 @@ public class ProductService {
                 throw new RuntimeException("상품 수정 중 파일 업로드 오류", e);
             }
         } else {
-             ProductVO old = productMapper.selectProductById(id);
-             if(old != null) vo.setProdImg(old.getProdImg());
+            ProductVO old = productMapper.selectProductById(id);
+            if(old != null) vo.setProdImg(old.getProdImg());
         }
 
         productMapper.updateProduct(vo);

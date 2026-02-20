@@ -44,9 +44,6 @@ const MainLayout = () => {
               <h1 className="text-xl font-semibold text-slate-900 hidden sm:block">{getPageTitle(location.pathname)}</h1>
             </div>
             <div className="flex items-center gap-2">
-              <Button variant="ghost" size="icon" onClick={() => navigate("/cart")} className="text-slate-600 hover:text-slate-900 hover:bg-slate-100">
-                <ShoppingCart className="h-5 w-5" />
-              </Button>
               <Button variant="ghost" size="icon" onClick={() => navigate("/settings")} className="text-slate-600 hover:text-slate-900 hover:bg-slate-100">
                 <User className="h-5 w-5" />
               </Button>
