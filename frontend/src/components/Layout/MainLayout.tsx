@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import { Button } from "@/components/ui/button";
-import { Menu, User, ShoppingCart } from "lucide-react";
+import { Menu, User } from "lucide-react";
 
 const MainLayout = () => {
     const navigate = useNavigate();
