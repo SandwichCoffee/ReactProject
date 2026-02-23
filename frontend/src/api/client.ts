@@ -33,7 +33,7 @@ client.interceptors.response.use(
             // Dispatch logout action
             store.dispatch(logout());
             // Optional: Redirect to login page if not already there
-            window.location.href = "/top/login";
+            window.location.href = "/login";
         }
         return Promise.reject(error);
     }
