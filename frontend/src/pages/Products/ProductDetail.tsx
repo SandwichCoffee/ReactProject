@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Trash2, Edit, Webhook, Zap } from "lucide-react";
+import { Trash2, Edit, Webhook, Zap, ArrowLeft } from "lucide-react";
 import {
   Card,
   CardContent,
@@ -107,7 +107,14 @@ export default function ProductDetail() {
       <Card>
         <CardHeader>
           <div className="flex items-center justify-between">
-      <h2 className="text-2xl font-bold tracking-tight text-slate-900">상품 상세 정보</h2>
+            <div className="flex items-center gap-4 mb-6">
+            <Button variant="ghost" size="icon" onClick={() => navigate(-1)}>
+              <ArrowLeft className="h-5 w-5" />
+            </Button>
+            <div>
+          <h2 className="text-2xl font-bold tracking-tight text-slate-900">상품 상세 정보</h2>
+        </div>
+      </div>
       
       {/* 관리자(ADMIN)일 경우에만 수정/삭제 버튼 노출 */}
       {user?.role === "Admin" && (
