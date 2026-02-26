@@ -8,9 +8,10 @@ import UserCreate from "@/pages/Users/UserCreate";
 import UserActivity from "@/pages/Users/UserActivity";
 import UserSettings from "@/pages/Users/UserSettings";
 import ProductList from "@/pages/Products/ProductList";
-import ProductCreate from "@/pages/Products/ProductCreate";
+// import ProductCreate from "@/pages/Products/ProductCreate";
 import ProductDetail from "@/pages/Products/ProductDetail";
-import ProductEdit from "@/pages/Products/ProductEdit";
+// import ProductEdit from "@/pages/Products/ProductEdit";
+import ProductWrite from "@/pages/Products/ProductWrite";
 import Resume from "@/pages/About/Resume";
 import RecruitList from "@/pages/Recruit/RecruitList";
 import RecruitWrite from "@/pages/Recruit/RecruitWrite";
@@ -60,8 +61,8 @@ export const router = createHashRouter([
               {
                 element: <AdminRoute />,
                 children: [
-                  { path: "new", element: <ProductCreate /> },
-                  { path: ":id/edit", element: <ProductEdit /> },
+                  { path: "new", element: <ProductWrite /> },
+                  { path: ":id/edit", element: <ProductWrite /> },
                 ],
               },
               { path: ":id", element: <ProductDetail /> },
