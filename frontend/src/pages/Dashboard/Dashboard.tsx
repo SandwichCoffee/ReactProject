@@ -35,6 +35,35 @@ export default function Home() {
     });
   }, [period]);
 
+  const getEffectiveStatus = (recruit: any) => {
+    if (recruit.status === "CLOSED" || recruit.status === "DRAFT") {
+      return recruit.status;
+    }
+    if (recruit.endDate) {
+      const today = new Date();
+      const endDate = new Date(recruit.endDate);
+      endDate.setHours(23, 59, 59, 999);
+      if (today > endDate) return "EXPIRED";
+    }
+    return recruit.status;
+  };
+
+  const getStatusBadge = (recruit: any) => {
+    const effectiveStatus = getEffectiveStatus(recruit);
+    switch (effectiveStatus) {
+      case "OPEN":
+        return <Badge className="bg-emerald-100 text-emerald-700 border-emerald-200">진행중</Badge>;
+      case "CLOSED":
+        return <Badge variant="secondary" className="text-slate-500 bg-slate-100">마감</Badge>;
+      case "EXPIRED":
+        return <Badge variant="outline" className="text-slate-400 border-slate-300 bg-slate-50">기간만료</Badge>;
+      case "DRAFT":
+        return <Badge variant="outline" className="text-slate-500">임시저장</Badge>;
+      default:
+        return <Badge variant="outline">{effectiveStatus}</Badge>;
+    }
+  };
+
   return (
     <div className="space-y-6 animate-in fade-in duration-500">
       <div className="flex items-center justify-between">
@@ -195,9 +224,7 @@ export default function Home() {
                   
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between mb-1">
-                        <Badge variant={recruit.status === 'OPEN' ? 'default' : 'secondary'} className="text-[10px] px-1.5 py-0 h-5">
-                            {recruit.status === 'OPEN' ? '채용중' : '마감'}
-                        </Badge>
+                        {getStatusBadge(recruit)}
                         {/* <span className="text-xs text-slate-400">D-Day 계산필요</span> */}
                     </div>
                     <p className="text-sm font-medium text-slate-900 leading-tight truncate group-hover:text-primary transition-colors">
