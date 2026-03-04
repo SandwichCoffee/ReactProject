@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Mail, Phone, Layout, Server, Terminal, Copy } from "lucide-react";
+import { Mail, Phone, Layout, Server, Terminal, Copy, Github } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 
@@ -91,15 +91,24 @@ export default function Resume() {
             시스템 운영과 보안 관제 경험을 바탕으로,<br/>
             안정적이고 견고한 서비스를 만드는 풀스택 개발자입니다.
           </p>
-          <div className="flex justify-center gap-4 pt-8">
-            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 font-semibold" onClick={() => navigate("/")}>
+          <div className="flex flex-wrap justify-center gap-4 pt-8">
+            <Button size="lg" className="bg-blue-600 hover:bg-blue-700 font-semibold text-white" onClick={() => navigate("/")}>
               포트폴리오 프로젝트 보기
+            </Button>
+            
+            <Button 
+              size="lg" 
+              variant="outline" 
+              className="bg-transparent border-slate-500 text-slate-200 hover:bg-slate-800 hover:text-white"
+              onClick={() => window.open("https://github.com/SandwichCoffee/ReactProject/tree/main", "_blank")}
+            >
+              <Github className="mr-2 h-5 w-5" />
+              GitHub 방문하기
             </Button>
           </div>
         </div>
       </section>
 
-      {/* 2. Introduction */}
       <div className="max-w-4xl mx-auto px-6 -mt-10 mb-20 relative z-10">
         <Card className="shadow-xl">
           <CardContent className="p-8 md:p-12 space-y-8">
