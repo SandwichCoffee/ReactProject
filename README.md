@@ -1,12 +1,7 @@
-<img width="880" height="819" alt="image" src="https://github.com/user-attachments/assets/133866ce-2570-4d5c-8c84-a77e33d92601" />
-
-<img width="896" height="798" alt="image" src="https://github.com/user-attachments/assets/22b32bce-0d1a-44b9-a323-ba9e80dcfbdd" />
-
-<img width="890" height="813" alt="image" src="https://github.com/user-attachments/assets/b2dc01a9-63d0-49bf-8950-9eddaa01c157" />
-
-<img width="866" height="807" alt="image" src="https://github.com/user-attachments/assets/dd8e8bc4-4107-4e48-acac-9736a1d6ec80" />
-
-
+<img width="600" alt="대시보드" src="https://github.com/user-attachments/assets/133866ce-2570-4d5c-8c84-a77e33d92601" />
+<img width="600" alt="상품관리" src="https://github.com/user-attachments/assets/22b32bce-0d1a-44b9-a323-ba9e80dcfbdd" />
+<img width="600" alt="회원관리" src="https://github.com/user-attachments/assets/b2dc01a9-63d0-49bf-8950-9eddaa01c157" />
+<img width="600" alt="채용공고" src="https://github.com/user-attachments/assets/dd8e8bc4-4107-4e48-acac-9736a1d6ec80" />
 
 **React + Spring Boot 풀스택 관리자 시스템**
  - 상품 관리, 주문 통계, 회원 권한 관리부터 채용 공고 기능까지 통합 관리하는 페이지입니다.
