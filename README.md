@@ -1,9 +1,13 @@
-<div align="center">
-  <img width="400" alt="대시보드" src="https://github.com/user-attachments/assets/133866ce-2570-4d5c-8c84-a77e33d92601" />
-  <img width="400" alt="상품관리" src="https://github.com/user-attachments/assets/22b32bce-0d1a-44b9-a323-ba9e80dcfbdd" />
-  <img width="400" alt="회원관리" src="https://github.com/user-attachments/assets/b2dc01a9-63d0-49bf-8950-9eddaa01c157" />
-  <img width="400" alt="채용공고" src="https://github.com/user-attachments/assets/dd8e8bc4-4107-4e48-acac-9736a1d6ec80" />
-</div>
+<table>
+  <tr>
+    <td><img width="400" alt="대시보드" src="https://github.com/user-attachments/assets/133866ce-2570-4d5c-8c84-a77e33d92601" /></td>
+    <td><img width="400" alt="상품관리" src="https://github.com/user-attachments/assets/22b32bce-0d1a-44b9-a323-ba9e80dcfbdd" /></td>
+  </tr>
+  <tr>
+    <td><img width="400" alt="회원관리" src="https://github.com/user-attachments/assets/b2dc01a9-63d0-49bf-8950-9eddaa01c157" /></td>
+    <td><img width="400" alt="채용공고" src="https://github.com/user-attachments/assets/dd8e8bc4-4107-4e48-acac-9736a1d6ec80" /></td>
+  </tr>
+</table>
 
 **React + Spring Boot 풀스택 관리자 시스템**
  - 상품 관리, 주문 통계, 회원 권한 관리부터 채용 공고 기능까지 통합 관리하는 페이지입니다.
