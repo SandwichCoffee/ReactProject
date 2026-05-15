@@ -29,11 +29,17 @@ client.interceptors.request.use((config) => {
 client.interceptors.response.use(
     (response) => response,
     (error) => {
-        if (error.response && error.response.status === 401) {
+        const requestUrl = error.config?.url ?? "";
+        const isAuthRequest = requestUrl.includes("/users/login") || requestUrl.includes("/users/join");
+
+        if (error.response && error.response.status === 401 && !isAuthRequest) {
             // Dispatch logout action
             store.dispatch(logout());
-            // Optional: Redirect to login page if not already there
-            window.location.href = "/login";
+
+            // HashRouter route
+            if (window.location.hash !== "#/login") {
+                window.location.hash = "#/login";
+            }
         }
         return Promise.reject(error);
     }

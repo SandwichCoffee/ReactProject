@@ -2,7 +2,10 @@ package com.portfolio.backend.service;
 
 import com.portfolio.backend.vo.UserVO;
 import com.portfolio.backend.dto.UserDto;
+import com.portfolio.backend.exception.DuplicateEmailException;
+import com.portfolio.backend.exception.InvalidCredentialsException;
 import com.portfolio.backend.mapper.UserMapper;
+import com.portfolio.backend.security.TokenProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +17,11 @@ import java.util.UUID;
 public class UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+    private final TokenProvider tokenProvider;
 
     public void join(UserDto.RegisterRequest dto) {
         if(userMapper.findByEmail(dto.getEmail()) != null) {
-            throw new RuntimeException("이미 존재하는 이메일입니다.");
+            throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
         }
 
         UserVO user = new UserVO();
@@ -36,10 +40,10 @@ public class UserService {
     public UserDto.Response login(UserDto.LoginRequest dto) {
         UserVO user = userMapper.findByEmail(dto.getEmail());
 
-        if(user == null) throw new RuntimeException("존재하지 않는 사용자입니다.");
+        if(user == null) throw new InvalidCredentialsException("아이디 또는 비밀번호가 일치하지 않습니다.");
 
         if(!passwordEncoder.matches(dto.getPassword(), user.getPassword())) {
-            throw new RuntimeException("비밀번호가 일치하지 않습니다.");
+            throw new InvalidCredentialsException("아이디 또는 비밀번호가 일치하지 않습니다.");
         }
 
         userMapper.updateLastLogin(user.getUserId());
@@ -49,6 +53,7 @@ public class UserService {
         response.setUserName(user.getUserName());
         response.setEmail(user.getEmail());
         response.setRole(user.getRole());
+        response.setToken(tokenProvider.generateToken(user.getUserId(), user.getRole()));
         response.setCreatedAt(user.getCreatedAt());
         
         return response;
