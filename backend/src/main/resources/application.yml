@@ -24,3 +24,7 @@ mybatis:
   configuration:
     map-underscore-to-camel-case: true
 
+app:
+  security:
+    token-secret: ${TOKEN_SECRET:change-me-local-token-secret}
+    token-expiration-seconds: ${TOKEN_EXPIRATION_SECONDS:86400}

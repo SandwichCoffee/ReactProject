@@ -1,3 +1,13 @@
+# React + Spring Boot Admin Portfolio
+
+React + Spring Boot 기반의 풀스택 관리자 시스템입니다.  
+단순 CRUD를 넘어서 인증/인가, 페이지네이션, 파일 업로드, 대시보드 통계까지 실제 운영 시나리오를 기준으로 구현했습니다.
+
+## Demo
+- Frontend (GitHub Pages): `https://sandwichcoffee.github.io/ReactProject/`
+- Backend API (Render): `https://reactproject-q472.onrender.com`
+
+## Preview
 <table>
   <tr>
     <td><img width="400" alt="대시보드" src="https://github.com/user-attachments/assets/133866ce-2570-4d5c-8c84-a77e33d92601" /></td>
@@ -9,83 +19,114 @@
   </tr>
 </table>
 
-**React + Spring Boot 풀스택 관리자 시스템**
- - 상품 관리, 주문 통계, 회원 권한 관리부터 채용 공고 기능까지 통합 관리하는 페이지입니다.
- - 해당 화면들은 제가 프로젝트를 하면서 경험했던 화면들을 React + Spring Boot로 구현해 보았습니다.
- - 단순한 CRUD 학습을 넘어, **실무에서 마주할 수 있는 기술적 챌린지(인증, 성능 최적화, 모바일 반응형)**를 해결하는 데 초점을 맞추었습니다.
- - 기존의 레거시 코드를 현대적인 아키텍처(React 19 + TypeScript + Vite)로 리팩토링하며 **유지보수성과 사용자 경험(UX)**을 극대화했습니다.
+## Tech Stack
+- Frontend: React 19, TypeScript, Vite, Tailwind CSS, Redux Toolkit, React Query, Axios, Recharts
+- Backend: Spring Boot 3, Java 17, MyBatis, MariaDB, Gradle, Spring Security
 
-**주요 성과**
-- 중앙 집중식 인증 보안: Axios Interceptor를 활용해 토큰 자동 주입 및 만료 시 자동 로그아웃 구현.
-- 대용량 데이터 대응: 백엔드 Offset 기반 페이지네이션을 구현하여 데이터 로딩 속도 50% 이상 개선.
-- 모바일 퍼스트 UX: shadcn/ui & Tailwind CSS 기반의 반응형 레이아웃(Collapsible Sidebar) 구현.
-- 확장 가능한 아키텍처: 기능(Feature) 단위 폴더 구조 및 재사용 가능한 공통 컴포넌트(Skeleton, Pagination) 설계.
+## Core Features
+- 인증/인가
+  - 로그인 시 토큰 발급
+  - Axios 인터셉터로 `Authorization: Bearer ...` 자동 주입
+  - 서버에서 토큰 검증 및 역할 기반 인가 적용
+- 사용자/권한 관리
+  - 회원가입/로그인
+  - 관리자 전용 사용자 목록/수정/삭제
+- 상품 관리
+  - 상품 CRUD
+  - 이미지 업로드 및 `/images/**` 정적 서빙
+  - 서버 사이드 페이지네이션(`page`, `size`)
+- 주문/장바구니
+  - 장바구니 담기/수량 수정/삭제
+  - 주문 생성 및 재고 차감
+  - 기간별 매출 통계(일/주/월/년)
+- 채용/개발로그
+  - 채용공고 CRUD
+  - 개발로그 CRUD
 
+## Security Policy (Current)
+- 공개 API
+  - `POST /api/users/join`
+  - `POST /api/users/login`
+- 관리자 전용 API
+  - `GET|PUT|DELETE /api/users/**`
+  - `POST /api/products`
+  - `POST /api/products/*`
+  - `DELETE /api/products/*`
+- 그 외 `/api/**`는 인증 필요
 
+## Error Response Policy
+- `400 Bad Request`: 입력 검증 실패, 잘못된 요청 형식
+- `401 Unauthorized`: 로그인 실패/인증 실패
+- `409 Conflict`: 중복 이메일, 상태 충돌
+- `500 Internal Server Error`: 내부 예외
 
-**기술 스택**
-
-Frontend
- - Core:  React 19, TypeScript
- - Build Tool: Vite
- - Styling: Tailwind CSS, shadcn/ui
- - State Mgmt: Redux Toolkit
- - Network: Axios
- - Charts: Recharts
-
-Backend
-- Framework: Spring Boot
-- Persistence: MyBatis, MariaDB
-- Build: Gradle
-
-
-
-**주요 특징**
-1. 인증 시스템 (Authentication)
- - JWT 기반 로그인: Access Token을 활용한 세션리스 인증.
- - 보안 강화:
-   - client.ts에 Axios 인스턴스 중앙화.
-   - Request Interceptor: 모든 요청에 `Bearer Token` 자동 주입.
-   - Response Interceptor: `401 Unauthorized` 감지 시 즉시 로그아웃 및 리다이렉트 처리.
-
-2. 고성능 상품 관리 (Product Management)
-- 서버 사이드 페이지네이션
-  - 클라이언트 부하를 줄이기 위해 `page`, `size` 파라미터를 통한 DB 조회.
-  - UI에 페이지 네비게이터(이전/다음, 숫자 버튼) 연동.
-- UX 최적화:
-  - Skeleton UI: 데이터 로딩 시 깜빡임(Layout Shift) 방지를 위한 스켈레톤 적용.
-  - Optimistic UI: 장바구니 담기 등 상호작용 시 즉각적인 피드백(Toast) 제공.
-
-3. 반응형 대시보드 (Responsive Dashboard)
-- 모바일 최적화:
-  - 데스크탑: 고정형 사이드바 (`static`).
-  - 모바일: 햄버거 메뉴 및 슬라이드 Drawer (`fixed`, `z-index` handling).
-- 데이터 시각화: `Recharts`를 활용한 실시간 매출 추이 그래프.
-
-
-
-**아키텍처**
-```bash
-src
-├── api          
-├── components
-│   ├── Auth     
-│   ├── Layout   
-│   └── ui       
-├── pages        (Product, Dashboard, User, Recruit 등..)
-├── store        
-└── utils        
+## Project Structure
+```text
+.
+├── frontend/
+│   ├── src/api
+│   ├── src/components
+│   ├── src/pages
+│   ├── src/routes
+│   └── src/store
+└── backend/
+    ├── src/main/java/com/portfolio/backend/
+    │   ├── config
+    │   ├── controller
+    │   ├── service
+    │   ├── mapper
+    │   ├── dto
+    │   └── vo
+    └── src/main/resources/
+        ├── mapper
+        ├── sql/local-schema.sql
+        └── application*.yml
 ```
 
+## Local Run
+### 1) Database
+```bash
+mysql -u <admin-user> -p
+```
+`portfolio` DB 생성 후 아래 스키마 적용:
+```bash
+mysql -h 127.0.0.1 -P 3306 -u portfolio_app -pportfolio1234 < backend/src/main/resources/sql/local-schema.sql
+```
 
+### 2) Backend
+```bash
+cd backend
+SPRING_PROFILES_ACTIVE=local DB_USERNAME=portfolio_app DB_PASSWORD=portfolio1234 ./gradlew bootRun
+```
 
-**트러블슈팅 & 및 난점**
-1. 인증 토큰 관리가 번거로웠던 문제
- - Problem: 모든 API 파일마다 Header에 토큰을 직접 넣어주는 중복 코드가 발생하고, 만료 처리가 누락되는 경우가 있었음.
- - Solution: Axios Interceptor를 도입하여 요청 전(request)에 토큰을 주입하고, 응답 후(response) 에러를 가로채 전역 에러 핸들링을 적용함. 이를 통해 코드 중복을 90% 제거하고 보안성을 높임.
+### 3) Frontend
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-2. 대량 데이터 렌더링 시 성능 저하
- - Problem: 상품 목록이 100개를 넘어가면서 브라우저 렌더링 속도가 눈에 띄게 느려짐.
- - Solution: 프론트엔드에서 필터링하던 방식을 서버 사이드 페이지네이션으로 변경. 한 번에 필요한 12개의 데이터만 요청하여 네트워크 트래픽 절감 및 로딩 속도 개선.
+## Deployment
+### Frontend (GitHub Pages)
+```bash
+cd frontend
+npm run deploy
+```
 
+### Backend
+- Render 환경변수: `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`, `FILE_UPLOAD_DIR`, `TOKEN_SECRET`
+- 프로필: `SPRING_PROFILES_ACTIVE=prod`
+
+## Troubleshooting
+- `POST /api/users/join` 500 + DB 권한 에러:
+  - `root` 대신 앱 전용 계정(`portfolio_app`)으로 접속 정보 지정
+- 로그인 실패 시 `/login` 404:
+  - HashRouter 환경에서는 `#/login`으로 이동해야 함
+- macOS Node 실행 시 `libsimdjson` 에러:
+  - `brew reinstall node simdjson` 후 재실행
+
+## What I Improved
+- 프론트 가드에 의존하던 구조를 서버 인가 강제로 보완
+- 회원가입/로그인 실패가 전부 500으로 떨어지던 응답 체계를 4xx/5xx로 분리
+- 로컬 업로드 경로를 OS 독립 경로(`user.home`) 기반으로 개선
 
