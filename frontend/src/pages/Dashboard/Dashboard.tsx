@@ -21,6 +21,37 @@ export default function Home() {
   const [chartData, setChartData] = useState<SalesStat[]>([]);
   const [totalRevenue, setTotalRevenue] = useState(0);
   const [period, setPeriod] = useState("daily");
+  type RecruitStatus = Recruit["status"] | "EXPIRED";
+
+  const formatWeeklyLabel = (rawLabel: string) => {
+    const match = rawLabel.match(/^(\d{4})-w(\d{1,2})$/i);
+    if (!match) return rawLabel;
+
+    const year = Number(match[1]);
+    const isoWeek = Number(match[2]);
+    if (Number.isNaN(year) || Number.isNaN(isoWeek) || isoWeek < 1 || isoWeek > 53) {
+      return rawLabel;
+    }
+
+    const jan4 = new Date(year, 0, 4);
+    const jan4Day = jan4.getDay() === 0 ? 7 : jan4.getDay();
+
+    const isoWeek1Monday = new Date(jan4);
+    isoWeek1Monday.setDate(jan4.getDate() - (jan4Day - 1));
+
+    const weekStart = new Date(isoWeek1Monday);
+    weekStart.setDate(isoWeek1Monday.getDate() + (isoWeek - 1) * 7);
+
+    const month = weekStart.getMonth() + 1;
+    const weekOfMonth = Math.floor((weekStart.getDate() - 1) / 7) + 1;
+
+    return `${month}월 ${weekOfMonth}째주`;
+  };
+
+  const formatChartDateLabel = (rawLabel: string) => {
+    if (period !== "weekly") return rawLabel;
+    return formatWeeklyLabel(rawLabel);
+  };
 
   useEffect(() => {
     // 2. 채용 공고
@@ -35,7 +66,7 @@ export default function Home() {
     });
   }, [period]);
 
-  const getEffectiveStatus = (recruit: any) => {
+  const getEffectiveStatus = (recruit: Recruit): RecruitStatus => {
     if (recruit.status === "CLOSED" || recruit.status === "DRAFT") {
       return recruit.status;
     }
@@ -48,7 +79,7 @@ export default function Home() {
     return recruit.status;
   };
 
-  const getStatusBadge = (recruit: any) => {
+  const getStatusBadge = (recruit: Recruit) => {
     const effectiveStatus = getEffectiveStatus(recruit);
     switch (effectiveStatus) {
       case "OPEN":
@@ -167,6 +198,7 @@ export default function Home() {
                           tickLine={false} 
                           axisLine={false} 
                           tickMargin={10}
+                          tickFormatter={(value) => formatChartDateLabel(String(value))}
                       />
                       <YAxis
                           stroke="#64748b"
@@ -177,7 +209,8 @@ export default function Home() {
                           width={60}
                       />
                       <Tooltip 
-                          formatter={(value: any) => [`${value.toLocaleString()}원`, "매출"]}
+                          labelFormatter={(label) => formatChartDateLabel(String(label))}
+                          formatter={(value) => [`${Number(value ?? 0).toLocaleString()}원`, "매출"]}
                           contentStyle={{ borderRadius: '8px', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)' }}
                       />
                       <Area 

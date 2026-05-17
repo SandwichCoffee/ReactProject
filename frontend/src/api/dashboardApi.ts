@@ -1,7 +1,7 @@
 import { client } from "./client";
 
 export interface SalesStat {
-  data: string;
+  date: string;
   revenue: number;
 }
 
