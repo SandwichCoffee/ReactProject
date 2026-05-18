@@ -29,6 +29,8 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.GET, "/health").permitAll()
+                        .requestMatchers(HttpMethod.HEAD, "/health").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/users/join", "/api/users/login").permitAll()
                         .requestMatchers("/images/**").permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/users/**").hasRole("ADMIN")
