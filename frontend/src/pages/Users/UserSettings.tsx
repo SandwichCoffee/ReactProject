@@ -32,7 +32,7 @@ const UserSettings = ({ userId }: { userId?: string }) => {
   const [formData, setFormData] = useState<Partial<User>>({
     userName: "",
     email: "",
-    role: "User",
+    role: "USER",
     status: "Active",
   });
 
@@ -132,12 +132,12 @@ const UserSettings = ({ userId }: { userId?: string }) => {
               name="role"
               value={formData.role}
               onChange={handleChange}
-              disabled={!!userId && formData.role !== 'Admin'} 
+              disabled={!!userId && formData.role !== 'ADMIN'} 
               className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
             >
-              <option value="User">User</option>
-              <option value="Admin">Admin</option>
-              <option value="Guest">Guest</option>
+              <option value="USER">USER</option>
+              <option value="ADMIN">ADMIN</option>
+              <option value="GUEST">GUEST</option>
             </select>
           </div>
 
