@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import {
-  BASE_URL,
   deleteProduct,
   webhookSimulation
 } from "@/api/productApi";
+import { getProductImageUrl, PLACEHOLDER_IMAGE } from "@/lib/image";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -157,10 +157,14 @@ export default function ProductDetail() {
             <div className="border rounded-lg overflow-hidden bg-slate-100 aspect-square flex items-center justify-center">
               {product.prodImg ? (
                 <img
-                  src={`${BASE_URL}/images/${product.prodImg}`}
-                  alt={product.prodName}
-                  className="w-full h-full object-contain"
-                />
+  src={getProductImageUrl(product.prodImg)}
+  alt={product.prodName}
+  onError={(event) => {
+    event.currentTarget.onerror = null;
+    event.currentTarget.src = PLACEHOLDER_IMAGE;
+  }}
+  className="w-full h-full object-cover"
+/>
               ) : (
                 <span className="text-slate-400">이미지 없음</span>
               )}

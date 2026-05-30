@@ -33,12 +33,23 @@ public class UserDto {
     }
 
     @Data
-    public static class Response {
+    public static class LoginResponse {
         private String userId;
         private String userName;
         private String email;
         private String role;
         private String token;
+        private LocalDateTime createdAt;
+    }
+
+    @Data
+    public static class Response {
+        private String userId;
+        private String userName;
+        private String email;
+        private String role;
+        private String status;
+        private LocalDateTime lastLogin;
         private LocalDateTime createdAt;
     }
 }

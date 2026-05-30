@@ -15,12 +15,12 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping
-    public List<UserVO> getUserList() {
+    public List<UserDto.Response> getUserList() {
         return userService.getUserList();
     }
 
     @GetMapping("/{id}")
-    public UserVO getUserById(@PathVariable String id) {
+    public UserDto.Response getUserById(@PathVariable String id) {
         return userService.getUserById(id);
     }
 
@@ -30,7 +30,7 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public UserDto.Response login(@RequestBody @Valid UserDto.LoginRequest user) {
+    public UserDto.LoginResponse login(@RequestBody @Valid UserDto.LoginRequest user) {
         return userService.login(user);
     }
 

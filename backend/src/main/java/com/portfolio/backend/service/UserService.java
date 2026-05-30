@@ -19,6 +19,21 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TokenProvider tokenProvider;
 
+    private UserDto.Response toResponse(UserVO user) {
+        if(user == null) return null;
+
+        UserDto.Response response = new UserDto.Response();
+        response.setUserId(user.getUserId());
+        response.setUserName(user.getUserName());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole());
+        response.setStatus(user.getStatus());
+        response.setLastLogin(user.getLastLogin());
+        response.setCreatedAt(user.getCreatedAt());
+
+        return response;
+    }
+
     public void join(UserDto.RegisterRequest dto) {
         if(userMapper.findByEmail(dto.getEmail()) != null) {
             throw new DuplicateEmailException("이미 존재하는 이메일입니다.");
@@ -37,7 +52,7 @@ public class UserService {
         userMapper.joinUser(user);
     }
 
-    public UserDto.Response login(UserDto.LoginRequest dto) {
+    public UserDto.LoginResponse login(UserDto.LoginRequest dto) {
         UserVO user = userMapper.findByEmail(dto.getEmail());
 
         if(user == null) throw new InvalidCredentialsException("아이디 또는 비밀번호가 일치하지 않습니다.");
@@ -48,7 +63,7 @@ public class UserService {
 
         userMapper.updateLastLogin(user.getUserId());
         
-        UserDto.Response response = new UserDto.Response();
+        UserDto.LoginResponse response = new UserDto.LoginResponse();
         response.setUserId(user.getUserId());
         response.setUserName(user.getUserName());
         response.setEmail(user.getEmail());
@@ -59,12 +74,12 @@ public class UserService {
         return response;
     }
 
-    public List<UserVO> getUserList() {
-        return userMapper.selectUserList();
+    public List<UserDto.Response> getUserList() {
+        return userMapper.selectUserList().stream().map(this::toResponse).toList();
     }
 
-    public UserVO getUserById(String id) {
-        return userMapper.selectUserById(id);
+    public UserDto.Response getUserById(String id) {
+        return toResponse(userMapper.selectUserById(id));
     }
 
     public void updateUser(UserVO user) {
