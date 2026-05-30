@@ -12,14 +12,16 @@ const getUserFromStorage = (): User | null => {
     try {
         const userStr = localStorage.getItem('user');
         return userStr ? JSON.parse(userStr) : null;
-    } catch (error) {
+    } catch {
         return null;
     }
 };
 
+const storedUser = getUserFromStorage();
+
 const initialState: AuthState = {
-    user: getUserFromStorage(),
-    isAuthenticated: !!getUserFromStorage(),
+    user: storedUser,
+    isAuthenticated: !!storedUser,
 };
 
 const authSlice = createSlice({
