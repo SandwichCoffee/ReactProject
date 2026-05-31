@@ -14,11 +14,13 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ImagePlus, X, ArrowLeft, Save } from "lucide-react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export default function ProductWrite() {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const isEdit = !!id;
+  const queryClient = useQueryClient();
 
   const [formData, setFormData] = useState<ProductInput>({
     prodName: "",
@@ -36,7 +38,9 @@ export default function ProductWrite() {
     >,
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    const nextValue = name === "prodPrice" || name === "prodStock" ? Number(value) : value;
+
+    setFormData((prev) => ({ ...prev, [name]: nextValue }));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -53,30 +57,42 @@ export default function ProductWrite() {
     setPreviewUrl(null);
   };
 
+  const saveMutation = useMutation({
+    mutationFn: () => {
+      if(isEdit && id) {
+        return updateProduct(Number(id), formData, file);
+      }
+
+      return createProduct(formData, file);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+
+      if (isEdit && id) {
+        queryClient.invalidateQueries({ queryKey: ["product", id] });
+        toast.success("상품이 수정되었습니다.");
+        navigate(`/products/${id}`);
+        return;
+      }
+
+      toast.success("상품이 등록되었습니다.");
+      navigate("/products");
+    },
+    onError: (error) => {
+      console.error("저장 실패: ", error);
+      toast.error("저장 중 오류가 발생했습니다.");
+    }
+  });
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!id) return;
 
     if (!formData.prodName || !formData.prodPrice) {
       toast.error("상품명과 가격은 필수입니다.");
       return;
     }
 
-    try {
-        if (isEdit && id) {
-            await updateProduct(Number(id), formData, file);
-            toast.success("상품이 수정되었습니다.");
-            navigate(`/products/${id}`);
-        }
-        else {
-            await createProduct(formData, file);
-            toast.success("상품이 등록되었습니다.");
-            navigate(`/products`);
-        }
-    } catch (error) {
-      console.error("저장 실패: ", error);
-      toast.error("저장 중 오류가 발생했습니다.");
-    }
+    saveMutation.mutate();
   };
 
   useEffect(() => {
@@ -255,8 +271,8 @@ export default function ProductWrite() {
           <Button type="button" variant="outline" size="lg" onClick={() => navigate(-1)}>
             취소
           </Button>
-          <Button type="submit" size="lg" className="gap-2">
-            <Save className="h-4 w-4" /> 변경사항 저장
+          <Button type="submit" size="lg" className="gap-2" disabled={saveMutation.isPending}>
+            <Save className="h-4 w-4" /> {saveMutation.isPending ? "저장 중..." : "변경사항 저장"}
           </Button>
         </div>
 

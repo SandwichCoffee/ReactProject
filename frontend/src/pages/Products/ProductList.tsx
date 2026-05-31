@@ -38,7 +38,7 @@ export default function ProductList() {
           </p>
         </div>
         <div className="flex items-center gap-3">
-          {user?.role === "Admin" && (
+          {user?.role === "ADMIN" && (
             <Button onClick={() => navigate("/products/new")}>
               <Plus className="h-4 w-4" /> 상품 등록
             </Button>

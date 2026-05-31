@@ -32,7 +32,9 @@ client.interceptors.response.use(
         const requestUrl = error.config?.url ?? "";
         const isAuthRequest = requestUrl.includes("/users/login") || requestUrl.includes("/users/join");
 
-        if (error.response && error.response.status === 401 && !isAuthRequest) {
+        const status = error.response?.status;
+
+        if (status === 401 && !isAuthRequest) {
             // Dispatch logout action
             store.dispatch(logout());
 
@@ -40,6 +42,10 @@ client.interceptors.response.use(
             if (window.location.hash !== "#/login") {
                 window.location.hash = "#/login";
             }
+        }
+
+        if(status === 403) {
+            window.location.hash = "#/";
         }
         return Promise.reject(error);
     }
