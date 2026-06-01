@@ -5,21 +5,15 @@ import com.portfolio.backend.vo.ProductVO;
 import com.portfolio.backend.dto.ProductDto;
 import com.portfolio.backend.dto.PageResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import java.io.File;
-import java.io.IOException;
-import java.util.UUID;
 import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     private final ProductMapper productMapper;
-
-    @Value("${file.upload-dir}")
-    private String uploadDir;
+    private final ImageStorageService imageStorageService;
 
     public PageResponse<ProductDto.Response> getProductList(int page, int size) {
         int offset = (page - 1) * size;
@@ -46,27 +40,8 @@ public class ProductService {
         vo.setProdStatus(dto.getProdStatus() != null ? dto.getProdStatus() : "ON_SALE");
 
         if(file != null && !file.isEmpty()) {
-            try {
-                String originalFilename = file.getOriginalFilename();
-                String extension = "";
-                if (originalFilename != null && originalFilename.contains(".")) {
-                    extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-                }
-                String savedFileName = UUID.randomUUID().toString() + extension;
-
-                File dir = new File(uploadDir);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                File dest = new File(dir, savedFileName);
-                file.transferTo(dest);
-                vo.setProdImg(savedFileName);
-            }
-            catch(IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("상품 등록 중 파일 업로드 오류", e);
-            }
+            String imageUrl = imageStorageService.uploadProductImage(file);
+            vo.setProdImg(imageUrl);
         }
 
         productMapper.insertProduct(vo);
@@ -86,32 +61,12 @@ public class ProductService {
         vo.setProdDesc(dto.getProdDesc());
         vo.setProdStatus(dto.getProdStatus());
 
-        if(file != null && !file.isEmpty()) {
-            try {
-                String originalFilename = file.getOriginalFilename();
-                String extension = "";
-                if (originalFilename != null && originalFilename.contains(".")) {
-                    extension = originalFilename.substring(originalFilename.lastIndexOf("."));
-                }
-                String savedFileName = UUID.randomUUID().toString() + extension;
-
-                File dir = new File(uploadDir);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-
-                File dest = new File(dir, savedFileName);
-                file.transferTo(dest);
-
-                vo.setProdImg(savedFileName);
-            }
-            catch(IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("상품 수정 중 파일 업로드 오류", e);
-            }
+        if (file != null && !file.isEmpty()) {
+            String imageUrl = imageStorageService.uploadProductImage(file);
+            vo.setProdImg(imageUrl);
         } else {
             ProductVO old = productMapper.selectProductById(id);
-            if(old != null) vo.setProdImg(old.getProdImg());
+            if (old != null) vo.setProdImg(old.getProdImg());
         }
 
         productMapper.updateProduct(vo);
