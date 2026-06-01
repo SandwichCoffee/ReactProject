@@ -5,8 +5,7 @@ import {
   type ProductInput,
   getProductById,
   createProduct,
-  updateProduct,
-  BASE_URL,
+  updateProduct
 } from "@/api/productApi";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -15,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { ImagePlus, X, ArrowLeft, Save } from "lucide-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { getProductImageUrl } from "@/lib/image";
 
 export default function ProductWrite() {
   const { id } = useParams<{ id: string }>();
@@ -106,7 +106,7 @@ export default function ProductWrite() {
           prodDesc: data.prodDesc,
         });
         if (data.prodImg) {
-          setPreviewUrl(`${BASE_URL}/images/${data.prodImg}`);
+          setPreviewUrl(getProductImageUrl(data.prodImg));
         }
       });
     }
@@ -244,7 +244,7 @@ export default function ProductWrite() {
                   <label className="w-40 h-40 border-2 border-dashed border-slate-300 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition-colors bg-white">
                     <ImagePlus className="text-slate-400 mb-2" size={32} />
                     <span className="text-xs text-slate-500">이미지 선택</span>
-                    <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
+                    <input type="file" className="hidden" accept="image/png, image/jpeg, image/webp" onChange={handleFileChange} />
                   </label>
                 )}
               </div>
