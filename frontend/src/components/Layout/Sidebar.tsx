@@ -56,7 +56,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
     <>
       <aside className="h-full w-64 bg-white border-r border-border flex flex-col">
         {/* 상단 로고 */}
-        <div className="p-6 flex items-center justify-between">
+        <div className="shrink-0 p-6 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2" onClick={onClose}>
             <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
               <span className="text-white font-bold text-xl">P</span>
@@ -70,7 +70,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
         </div>
 
         {/* 메뉴 */}
-        <nav className="flex-1 px-4 space-y-2 mt-4">
+        <nav className="flex-1 min-h-0 overflow-y-auto px-4 space-y-2 mt-4 pb-4">
           {menuItems.map((item) => {
             const isActive = location.pathname === item.path || 
                             (item.path !== "/" && location.pathname.startsWith(item.path));
@@ -93,7 +93,7 @@ export default function Sidebar({ onClose }: SidebarProps) {
           })}
         </nav>
 
-        <div className="p-4 border-t border-border mt-auto">
+        <div className="shrink-0 p-4 border-t border-border bg-white">
           {isAuthenticated && user ? (
             <div className="flex items-center gap-3 px-2">
               <Avatar className="h-9 w-9">

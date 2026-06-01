@@ -21,14 +21,14 @@ const MainLayout = () => {
     };
 
     return (
-      <div className="min-h-screen bg-muted flex relative">
+      <div className="h-screen bg-muted flex relative overflow-hidden">
         {/* 모바일용 사이드바 */}
         {isSidebarOpen && (
           <div className="fixed inset-0 bg-black/50 z-40 md:hidden" onClick={() => setIsSidebarOpen(false)} />
         )}
 
         {/* 사이드바 */}
-        <div className={`fixed inset-y-0 left-0 z-50 transform transition-transform duration-300 ease-in-out md:relative md:transform-none md:flex ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
+        <div className={`fixed inset-y-0 left-0 z-50 h-full transform transition-transform duration-300 ease-in-out md:relative md:inset-auto md:transform-none md:flex md:shrink-0 ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"}`}>
           <Sidebar onClose={() => setIsSidebarOpen(false)} />
         </div>
 
